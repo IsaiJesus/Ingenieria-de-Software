@@ -38,7 +38,7 @@ export default function Login({ rol }) {
           {rol === "candidate" && (
             <div className="w-full flex items-center justify-center text-xs mt-2">
               <p>
-                ¿No tienes cuenta?{" "}
+                ¿No tienes cuenta?&nbsp;
                 <Link
                   to="/registro"
                   className="text-xs font-semibold text-blue-600 hover:text-blue-700"

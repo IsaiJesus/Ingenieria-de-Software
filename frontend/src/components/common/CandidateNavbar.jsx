@@ -20,11 +20,11 @@ export default function CandidateNavbar() {
         <h1>Plataforma de RH</h1>
       </Link>
       <div className="flex">
-        <NavLink to="/" className={getNavLinkClasses} end>
+        <NavLink to="/vacantes" className={getNavLinkClasses} >
           <FaSuitcase className="mr-2" />
           Vacantes
         </NavLink>
-        <NavLink to="/aplicaciones" className={getNavLinkClasses} end>
+        <NavLink to="/aplicaciones" className={getNavLinkClasses} >
           <FaPaste className="mr-2" />
           Mis aplicaciones
         </NavLink>
@@ -34,7 +34,7 @@ export default function CandidateNavbar() {
           <FaSignOutAlt className="mr-2" />
           Cerrar sesión
         </button>
-        <NavLink to="/perfil" className={getNavLinkClasses} end>
+        <NavLink to="/perfil/:userId" className={getNavLinkClasses} >
           <FaUser className="mr-2" />
           Perfil
         </NavLink>

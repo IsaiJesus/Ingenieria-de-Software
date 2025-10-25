@@ -31,7 +31,7 @@ export default function RecluiterNavbar() {
           <FaSignOutAlt className="mr-2" />
           Cerrar sesión
         </button>
-        <NavLink to="/perfil" className={getNavLinkClasses} end>
+        <NavLink to="/perfil/:userId" className={getNavLinkClasses} >
           <FaUser className="mr-2" />
           Perfil
         </NavLink>

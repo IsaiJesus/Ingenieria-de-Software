@@ -4,7 +4,7 @@ import RecluiterNavbar from "./RecluiterNavbar";
 
 export default function Layout({rol, children}) {
   return (
-    <main className="bg-gray-50 min-h-screen">
+    <main className="bg-gray-50 min-h-screen flex flex-col">
       {
         rol === "candidate" ? <CandidateNavbar/> : null
       }

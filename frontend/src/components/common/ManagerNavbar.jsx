@@ -21,11 +21,11 @@ export default function ManagerNavbar() {
         <p className="text-xs font-medium text-black">Liliana Solís Herrera</p>
       </Link>
       <div className="flex">
-        <NavLink to="/" className={getNavLinkClasses} end>
+        <NavLink to="/" className={getNavLinkClasses} >
           <FaUsers className="mr-2" />
           Shortlist de candidatos
         </NavLink>
-        <NavLink to="/aplicaciones" className={getNavLinkClasses} end>
+        <NavLink to="/aplicaciones" className={getNavLinkClasses} >
           <FaStar className="mr-2" />
           Desempeño
         </NavLink>
@@ -35,7 +35,7 @@ export default function ManagerNavbar() {
           <FaSignOutAlt className="mr-2" />
           Cerrar sesión
         </button>
-        <NavLink to="/perfil" className={getNavLinkClasses} end>
+        <NavLink to="/perfil/:userId" className={getNavLinkClasses} >
           <FaUser className="mr-2" />
           Perfil
         </NavLink>

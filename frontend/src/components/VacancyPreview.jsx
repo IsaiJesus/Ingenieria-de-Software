@@ -12,7 +12,7 @@ export default function VacancyPreview() {
         Únete a nuestro equipo como analista de datos y ayuda a transformar
         información en decisiones estratégicas de negocio.
       </p>
-      <Link to="/vacantes/id" className="py-2 px-6 font-semibold rounded-sm text-white bg-blue-600 hover:bg-blue-700">
+      <Link to="/vacantes/:vacancyId" className="py-2 px-6 font-semibold rounded-sm text-white bg-blue-600 hover:bg-blue-700">
         Ver detalles y aplicar
       </Link>
     </div>

@@ -1,7 +1,7 @@
 import { FaUserPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-export default function CandidateRegister() {
+export default function Register() {
   return (
     <div className="flex items-center justify-center h-screen w-screen">
       <div className="flex items-center justify-center flex-col p-10 w-fit shadow-md rounded-md bg-white">
@@ -28,8 +28,12 @@ export default function CandidateRegister() {
               <select
                 id="sex"
                 className="p-2 mb-4 text-sm border border-gray-500 rounded-sm"
+                defaultValue=""
+                required
               >
-                <option value="" disabled selected required>Seleccionar</option>
+                <option disabled value="">
+                  Seleccionar
+                </option>
                 <option value="masculino">Masculino</option>
                 <option value="femenino">Femenino</option>
                 <option value="otro">Otro</option>
@@ -91,9 +95,9 @@ export default function CandidateRegister() {
           </button>
           <div className="w-full flex items-center justify-center text-xs mt-2">
             <p>
-              ¿Ya tienes cuenta?{" "}
+              ¿Ya tienes cuenta?&nbsp;
               <Link
-                to="/login/candidato"
+                to="/login"
                 className="text-xs font-semibold text-green-600 hover:text-green-700"
               >
                 Inicia sesión
