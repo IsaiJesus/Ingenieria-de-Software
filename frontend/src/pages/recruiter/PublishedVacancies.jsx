@@ -1,0 +1,15 @@
+import Layout from "../../components/common/Layout";
+import Section from "../../components/Section";
+import VacancyPublishedPreview from "../../components/VacancyPublishedPreview";
+
+export default function PublishedVacancies() {
+  return (
+    <Layout rol="recluiter">
+      <Section title="Vacantes publicadas" id={false}>
+        <VacancyPublishedPreview />
+        <VacancyPublishedPreview />
+        <VacancyPublishedPreview />
+      </Section>
+    </Layout>
+  );
+}

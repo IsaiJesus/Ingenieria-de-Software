@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaPaste, FaSignOutAlt, FaSuitcase, FaUser } from "react-icons/fa";
 
-export default function Navbar() {
+export default function CandidateNavbar() {
   const baseClasses =
     "flex items-center py-2 px-3 mx-2 font-semibold rounded-sm";
 
@@ -16,15 +16,15 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between py-2 px-8 bg-white shadow-md">
-      <NavLink to="/vacantes" className="font-bold text-xl text-blue-600">
+      <Link to="/" className="font-bold text-xl text-blue-600">
         <h1>Plataforma de RH</h1>
-      </NavLink>
+      </Link>
       <div className="flex">
-        <NavLink to="/vacantes" className={getNavLinkClasses}>
+        <NavLink to="/" className={getNavLinkClasses} end>
           <FaSuitcase className="mr-2" />
           Vacantes
         </NavLink>
-        <NavLink to="/aplicaciones" className={getNavLinkClasses}>
+        <NavLink to="/aplicaciones" className={getNavLinkClasses} end>
           <FaPaste className="mr-2" />
           Mis aplicaciones
         </NavLink>
@@ -34,7 +34,7 @@ export default function Navbar() {
           <FaSignOutAlt className="mr-2" />
           Cerrar sesión
         </button>
-        <NavLink to="/perfil" className={getNavLinkClasses}>
+        <NavLink to="/perfil" className={getNavLinkClasses} end>
           <FaUser className="mr-2" />
           Perfil
         </NavLink>
