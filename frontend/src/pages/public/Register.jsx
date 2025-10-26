@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 export default function Register() {
   return (
-    <div className="flex items-center justify-center h-screen w-screen">
-      <div className="flex items-center justify-center flex-col p-10 w-fit shadow-md rounded-md bg-white">
+    <div className="flex items-center justify-center min-h-screen w-screen">
+      <div className="flex items-center justify-center flex-col p-10 my-8 w-fit shadow-md rounded-md bg-white">
         <div className="flex items-center justify-center p-4 mb-4 w-fit bg-green-600 text-white text-2xl rounded-lg">
           <FaUserPlus />
         </div>

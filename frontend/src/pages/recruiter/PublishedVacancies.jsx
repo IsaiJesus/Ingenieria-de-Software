@@ -1,4 +1,6 @@
 import Layout from "../../components/common/Layout";
+import EditVacancy from "../../components/EditVacancy";
+import PostVacancy from "../../components/PostVacancy";
 import Section from "../../components/Section";
 import VacancyPublishedPreview from "../../components/VacancyPublishedPreview";
 
@@ -9,6 +11,7 @@ export default function PublishedVacancies() {
         <VacancyPublishedPreview />
         <VacancyPublishedPreview />
         <VacancyPublishedPreview />
+        {/*<EditVacancy /> */}
       </Section>
     </Layout>
   );

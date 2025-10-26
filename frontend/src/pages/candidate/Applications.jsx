@@ -1,6 +1,6 @@
-import ApplicationPreview from "./ApplicationPreview";
-import Layout from "./common/Layout";
-import Section from "./Section";
+import ApplicationPreview from "../../components/ApplicationPreview";
+import Layout from "../../components/common/Layout";
+import Section from "../../components/Section";
 
 
 export default function Applications() {

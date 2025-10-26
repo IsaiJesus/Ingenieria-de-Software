@@ -11,10 +11,27 @@ export default function VacancyPublishedPreview() {
           </p>
         </div>
         <p className="mt-2 mb-3 line-clamp-2">
-          Descripción: Únete a nuestro equipo como analista de datos y ayuda a transformar
-          información en decisiones estratégicas de negocio.
+          Descripción: Únete a nuestro equipo como analista de datos y ayuda a
+          transformar información en decisiones estratégicas de negocio.
         </p>
-        <p >Sueldo: $18,000 mensual</p>
+        <p className="mt-2 mb-3 line-clamp-2">
+          Requisitos: <br />
+          • Licenciatura en áreas económico-administrativas, ingeniería o afín <br /> • 2+ años de experiencia en análisis de datos <br />
+          • Dominio de SQL y Excel avanzado <br />
+          • Experiencia con herramientas de visualización (Tableau, Power BI) <br />
+          • Pensamiento analítico y atención al detalle
+        </p>
+        <p className="mt-2 mb-3 line-clamp-2">
+          Beneficios: <br />
+          • Prestaciones superiores a las de ley <br />
+          • Bonos por desempeño <br />
+          • Oportunidades de crecimiento <br />
+          • Capacitación especializada <br />
+          • Ambiente profesional
+        </p>
+        <p>
+          Sueldo: <strong>$18,000 mensual</strong>
+        </p>
       </div>
       <div className="flex items-center justify-center">
         <button className="p-3 mr-2 rounded-sm text-white cursor-pointer bg-blue-600 hover:bg-blue-700">

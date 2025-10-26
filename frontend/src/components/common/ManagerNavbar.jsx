@@ -16,16 +16,16 @@ export default function ManagerNavbar() {
 
   return (
     <nav className="flex items-center justify-between py-2 px-8 bg-white shadow-md">
-      <Link to="/" className="flex flex-col justify-center font-bold text-xl text-blue-600">
+      <Link to="/shortlist" className="flex flex-col justify-center font-bold text-xl text-blue-600">
         <h1>Plataforma de RH</h1>
         <p className="text-xs font-medium text-black">Liliana Solís Herrera</p>
       </Link>
       <div className="flex">
-        <NavLink to="/" className={getNavLinkClasses} >
+        <NavLink to="/shortlist" className={getNavLinkClasses} >
           <FaUsers className="mr-2" />
           Shortlist de candidatos
         </NavLink>
-        <NavLink to="/aplicaciones" className={getNavLinkClasses} >
+        <NavLink to="/desempeño" className={getNavLinkClasses} >
           <FaStar className="mr-2" />
           Desempeño
         </NavLink>

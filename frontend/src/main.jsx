@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 
 // --- PÁGINAS PÚBLICAS ---
 import Login from "./pages/public/Login.jsx";
@@ -11,17 +11,19 @@ import NotFound from "./pages/public/NotFound.jsx";
 import Vacancies from "./pages/public/Vacancies.jsx";
 
 // --- PÁGINAS DEL CANDIDATO ---
-import Vacancy from "./components/Vacancy.jsx";
+import Vacancy from "./pages/candidate/Vacancy.jsx";
+import Applications from "./pages/candidate/Applications.jsx";
+import Application from "./pages/candidate/Application.jsx";
 
 // --- PÁGINAS DEL RECLUTADOR ---
 import PublishedVacancies from "./pages/recruiter/PublishedVacancies.jsx";
 
 // --- PÁGINAS DEL JEFE DE ÁREA ---
+import Shortlist from "./pages/manager/Shortlist.jsx";
+import Performance from "./pages/manager/Performance.jsx";
 
-import "./index.css";
-import Applications from "./components/Applications.jsx";
-import Application from "./components/Application.jsx";
 import Profile from "./pages/common/Profile.jsx";
+import "./index.css";
 
 const router = createBrowserRouter([
   // --- RUTAS PÚBLICAS ---
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
   },
 
   // --- RUTAS PRIVADAS: JEFE DE ÁREA ---
+  {
+    path: "/shortlist",
+    element: <Shortlist />,
+  },
+  {
+    path: "/desempeño",
+    element: <Performance />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(

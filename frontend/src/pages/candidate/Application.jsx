@@ -1,7 +1,7 @@
 import { FaBrain, FaCheck, FaComments, FaRegCalendar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Layout from "./common/Layout";
-import Section from "./Section";
+import Layout from "../../components/common/Layout";
+import Section from "../../components/Section";
 
 export default function Application({ text }) {
   return (

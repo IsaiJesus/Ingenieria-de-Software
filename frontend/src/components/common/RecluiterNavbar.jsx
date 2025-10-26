@@ -16,7 +16,7 @@ export default function RecluiterNavbar() {
 
   return (
     <nav className="flex items-center justify-between py-2 px-8 bg-white shadow-md">
-      <Link to="/" className="flex flex-col justify-center font-bold text-xl text-blue-600">
+      <Link to="/vacantes-publicadas" className="flex flex-col justify-center font-bold text-xl text-blue-600">
         <h1>Plataforma de RH</h1>
         <p className="text-xs font-medium text-black">Liliana Solís Herrera</p>
       </Link>

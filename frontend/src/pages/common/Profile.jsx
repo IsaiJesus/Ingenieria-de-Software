@@ -4,7 +4,7 @@ import { FaIdCard } from "react-icons/fa";
 export default function Profile() {
   return (
     <Layout rol="candidate">
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center my-8">
         <div className="flex items-center justify-center flex-col p-10 w-fit shadow-md rounded-md bg-white">
           <div className="flex items-center justify-center p-4 mb-4 w-fit bg-blue-600 text-white text-2xl rounded-lg">
             <FaIdCard />

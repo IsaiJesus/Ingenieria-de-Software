@@ -1,6 +1,6 @@
 import { FaRegCalendar } from "react-icons/fa";
-import Layout from "./common/Layout";
-import Section from "./Section";
+import Layout from "../../components/common/Layout";
+import Section from "../../components/Section";
 import { Link } from "react-router-dom";
 
 export default function Vacancy({ text }) {
@@ -32,7 +32,8 @@ export default function Vacancy({ text }) {
               • 2+ años de experiencia en análisis de datos <br />
               • Dominio de SQL y Excel avanzado <br />
               • Experiencia con herramientas de visualización (Tableau, Power
-              BI) <br />• Pensamiento analítico y atención al detalle
+              BI) <br />
+              • Pensamiento analítico y atención al detalle
             </p>
           </div>
           <div className="mt-4 mb-6">
