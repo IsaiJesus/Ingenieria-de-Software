@@ -34,9 +34,9 @@ export default function Register() {
                 <option disabled value="">
                   Seleccionar
                 </option>
-                <option value="masculino">Masculino</option>
-                <option value="femenino">Femenino</option>
-                <option value="otro">Otro</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
               </select>
             </div>
             <div className="flex flex-col ml-1 w-1/2">

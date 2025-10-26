@@ -19,6 +19,16 @@ export default function PostVacancy() {
             required
             className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
           />
+          <label htmlFor="salary" className="mb-1 text-xs">
+            Sueldo
+          </label>
+          <input
+            id="salary"
+            type="text"
+            placeholder="$10,000 - $15,000 mensual"
+            required
+            className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
+          />
           <label htmlFor="date" className="mb-1 text-xs">
             Fecha de finalización de la postulación
           </label>
@@ -43,6 +53,9 @@ export default function PostVacancy() {
           <textarea
             name="requirements"
             id="requirements"
+            placeholder="• Requisito 1
+            • Requisito 2
+            • Requisito 3"
             required
             className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
           ></textarea>
@@ -52,6 +65,9 @@ export default function PostVacancy() {
           <textarea
             name="benefits"
             id="benefits"
+            placeholder="• Beneficio 1
+            • Beneficio 2
+            • Beneficio 3"
             required
             className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
           ></textarea>

@@ -19,6 +19,15 @@ export default function EditVacancy() {
             required
             className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
           />
+          <label htmlFor="salary" className="mb-1 text-xs">
+            Sueldo
+          </label>
+          <input
+            id="salary"
+            type="text"
+            required
+            className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
+          />
           <label htmlFor="date" className="mb-1 text-xs">
             Fecha de finalización de la postulación
           </label>

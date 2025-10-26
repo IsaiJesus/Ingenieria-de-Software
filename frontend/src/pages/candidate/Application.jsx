@@ -1,4 +1,4 @@
-import { FaBrain, FaCheck, FaComments, FaRegCalendar } from "react-icons/fa";
+import { FaBrain, FaCheck, FaComments, FaRegCalendar, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Layout from "../../components/common/Layout";
 import Section from "../../components/Section";
@@ -37,7 +37,7 @@ export default function Application({ text }) {
               . Para más información revisa el correo electrónico que te
               enviamos.
             </p>
-            <div className="flex items-center justify-center p-4 my-4">
+            <div className="flex items-baseline justify-center p-4 my-4">
               <div className="flex flex-col items-center justify-center mx-1">
                 <span className="flex items-center justify-center p-1 border-2 border-green-600 bg-none rounded-full text-2xl text-white">
                   <span className="flex items-center justify-center p-3 bg-green-600 rounded-full">
@@ -75,6 +75,17 @@ export default function Application({ text }) {
                 </span>
                 <p className="mt-1 text-sm text-center">
                   Entrevista con jefe de área
+                </p>
+              </div>
+              <div className="mx-4 w-1/6 h-1 bg-blue-100 rounded-xl"></div>
+              <div className="flex flex-col items-center justify-center mx-1">
+                <span className="flex items-center justify-center p-1 border-2 border-red-600 bg-none rounded-full text-2xl text-white">
+                  <span className="flex items-center justify-center p-3 bg-red-600 rounded-full">
+                    <FaTimes />
+                  </span>
+                </span>
+                <p className="mt-1 text-sm text-center">
+                  Rechazado
                 </p>
               </div>
             </div>

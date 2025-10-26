@@ -7,3 +7,7 @@ body {
 p {
   white-space: pre-line;
 }
+
+input, textarea {
+  white-space: pre-line;
+}
