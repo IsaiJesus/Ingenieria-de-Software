@@ -1,7 +1,11 @@
 import { FaSignInAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login({ rol }) {
+
+  const { login } = useAuth();
+
   return (
     <div className="flex items-center justify-center h-screen w-screen">
       <div className="flex items-center justify-center flex-col p-10 w-fit shadow-md rounded-md bg-white">
@@ -32,7 +36,7 @@ export default function Login({ rol }) {
           <button className="self-end text-xs font-semibold cursor-pointer text-blue-600 hover:text-blue-700">
             ¿Olvidaste tu contraseña?
           </button>
-          <button className="py-2 px-6 mt-6 font-semibold rounded-sm cursor-pointer text-white bg-blue-600 hover:bg-blue-700">
+          <button onClick={() => login('test@test.com', '123')} className="py-2 px-6 mt-6 font-semibold rounded-sm cursor-pointer text-white bg-blue-600 hover:bg-blue-700">
             Iniciar sesión
           </button>
           {rol === "candidate" && (

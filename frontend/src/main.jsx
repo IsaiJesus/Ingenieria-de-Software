@@ -1,6 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider.jsx";
+import "./index.css";
 
 // --- PÁGINAS PÚBLICAS ---
 import Login from "./pages/public/Login.jsx";
@@ -9,6 +15,10 @@ import Register from "./pages/public/Register.jsx";
 import NotFound from "./pages/public/NotFound.jsx";
 
 import Vacancies from "./pages/public/Vacancies.jsx";
+
+// --- COMUNES ---
+import Profile from "./pages/common/Profile.jsx";
+import { ProtectedRoute } from "./components/common/ProtectedRoute.jsx";
 
 // --- PÁGINAS DEL CANDIDATO ---
 import Vacancy from "./pages/candidate/Vacancy.jsx";
@@ -21,9 +31,6 @@ import PublishedVacancies from "./pages/recruiter/PublishedVacancies.jsx";
 // --- PÁGINAS DEL JEFE DE ÁREA ---
 import Shortlist from "./pages/manager/Shortlist.jsx";
 import Performance from "./pages/manager/Performance.jsx";
-
-import Profile from "./pages/common/Profile.jsx";
-import "./index.css";
 
 const router = createBrowserRouter([
   // --- RUTAS PÚBLICAS ---
@@ -58,41 +65,70 @@ const router = createBrowserRouter([
   // --- RUTAS PRIVADAS: CANDIDATO ---
   {
     path: "/vacantes/:vacancyId",
-    element: <Vacancy text="vacantes"/>,
+    element: (
+      <ProtectedRoute>
+        <Vacancy text="vacantes" />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/aplicaciones",
-    element: <Applications/>,
+    element: (
+      <ProtectedRoute>
+        <Applications />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/aplicaciones/:applicationId",
-    element: <Application text="aplicaciones"/>,
+    element: (
+      <ProtectedRoute>
+        <Application text="aplicaciones" />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/perfil/:userId",
-    element: <Profile/>,
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
   },
 
   // --- RUTAS PRIVADAS: RECLUTADOR ---
   {
     path: "/vacantes-publicadas",
-    element: <PublishedVacancies />,
+    element: (
+      <ProtectedRoute>
+        <PublishedVacancies />
+      </ProtectedRoute>
+    ),
   },
 
   // --- RUTAS PRIVADAS: JEFE DE ÁREA ---
   {
     path: "/shortlist",
-    element: <Shortlist />,
+    element: (
+      <ProtectedRoute>
+        <Shortlist />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/desempeño",
-    element: <Performance />,
+    element: (
+      <ProtectedRoute>
+        <Performance />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    {/* <App /> */}
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );
