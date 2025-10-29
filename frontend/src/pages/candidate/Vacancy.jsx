@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function Vacancy({ text }) {
   return (
-    <Layout rol="candidate">
+    <Layout role="candidate">
       <Section id={true} text={text}>
         <div className="p-6 mb-6 bg-white shadow-md rounded-sm">
           <h2 className="mb-3 text-xl font-semibold">Analista de datos</h2>

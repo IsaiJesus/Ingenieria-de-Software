@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 
 const LOCAL_STORAGE_KEY = 'user';
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(() => {
     try {
@@ -20,21 +22,20 @@ export const AuthProvider = ({ children }) => {
     return null;
   });
   
-  const login = (email, password) => {
-    // ... tu lógica de fetch/axios a tu API ...
-    
-    // PARA UN CASO REAL NO SE DEBE GUARDAR LA CONTRASEÑA EN LOCAL STORAGE NI EN EL ESTADO
-    const fakeUserData = { id: 1, name: "Usuario Ejemplo", email: email, password: password };
-    
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(fakeUserData));
-    
-    setUser(fakeUserData);
+  const login = (id, role) => {
+    const user = { id: id,  role: role };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(user));
+    setUser(user);
   };
 
-  const logout = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    
-    setUser(null);
+  const logout = (url) => {
+    if (!url) url = "";
+    navigate(`/login${url}`, { replace: true });
+
+    setTimeout(() => {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      setUser(null);
+    }, 1);
   };
 
   const value = {

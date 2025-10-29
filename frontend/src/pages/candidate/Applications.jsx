@@ -5,7 +5,7 @@ import Section from "../../components/Section";
 
 export default function Applications() {
   return (
-    <Layout rol="candidate">
+    <Layout role="candidate">
       <Section title="Mis aplicaciones" id={false}>
         <ApplicationPreview />
         <ApplicationPreview />

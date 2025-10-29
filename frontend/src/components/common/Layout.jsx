@@ -2,17 +2,17 @@ import CandidateNavbar from "./CandidateNavbar";
 import ManagerNavbar from "./ManagerNavbar";
 import RecluiterNavbar from "./RecluiterNavbar";
 
-export default function Layout({rol, children}) {
+export default function Layout({role, children}) {
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col">
       {
-        rol === "candidate" ? <CandidateNavbar/> : null
+        role === "candidate" ? <CandidateNavbar/> : null
       }
       {
-        rol === "recluiter" ? <RecluiterNavbar/> : null
+        role === "recluiter" ? <RecluiterNavbar/> : null
       }
       {
-        rol === "manager" ? <ManagerNavbar/> : null
+        role === "manager" ? <ManagerNavbar/> : null
       }
       {children}
     </main>

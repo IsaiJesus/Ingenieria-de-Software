@@ -5,6 +5,7 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+import AuthLayout from "./components/common/AuthLayout.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import "./index.css";
 
@@ -33,102 +34,106 @@ import Shortlist from "./pages/manager/Shortlist.jsx";
 import Performance from "./pages/manager/Performance.jsx";
 
 const router = createBrowserRouter([
-  // --- RUTAS PÚBLICAS ---
   {
-    path: "/",
-    element: <Navigate to="/vacantes" replace />,
-    errorElement: <NotFound />,
-  },
-  {
-    path: "/vacantes",
-    element: <Vacancies />,
-  },
+    element: (
+      <AuthProvider>
+        <AuthLayout />
+      </AuthProvider>
+    ),
+    children: [
+      // --- RUTAS PÚBLICAS ---
+      {
+        path: "/",
+        element: <Navigate to="/vacantes" replace />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "/vacantes",
+        element: <Vacancies role="candidate" />,
+      },
 
-  // --- RUTAS DE AUTENTICACIÓN ---
-  {
-    path: "/registro",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login rol="candidate" />,
-  },
-  {
-    path: "/login/reclutador",
-    element: <Login rol="recluiter" />,
-  },
-  {
-    path: "/login/jefe-area",
-    element: <Login rol="manager" />,
-  },
+      // --- RUTAS DE AUTENTICACIÓN ---
+      {
+        path: "/registro",
+        element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login role="candidate" />,
+      },
+      {
+        path: "/login/trabajador",
+        element: <Login />,
+      },
 
-  // --- RUTAS PRIVADAS: CANDIDATO ---
-  {
-    path: "/vacantes/:vacancyId",
-    element: (
-      <ProtectedRoute>
-        <Vacancy text="vacantes" />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/aplicaciones",
-    element: (
-      <ProtectedRoute>
-        <Applications />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/aplicaciones/:applicationId",
-    element: (
-      <ProtectedRoute>
-        <Application text="aplicaciones" />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/perfil/:userId",
-    element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
-    ),
-  },
+      {
+        path: "/perfil/:id",
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
 
-  // --- RUTAS PRIVADAS: RECLUTADOR ---
-  {
-    path: "/vacantes-publicadas",
-    element: (
-      <ProtectedRoute>
-        <PublishedVacancies />
-      </ProtectedRoute>
-    ),
-  },
+      // --- RUTAS PRIVADAS: CANDIDATO ---
+      {
+        path: "/vacantes/:vacancyId",
+        element: (
+          <ProtectedRoute>
+            <Vacancy text="vacantes" role="candidate" />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/aplicaciones",
+        element: (
+          <ProtectedRoute>
+            <Applications role="candidate" />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/aplicaciones/:applicationId",
+        element: (
+          <ProtectedRoute>
+            <Application text="aplicaciones" role="candidate" />
+          </ProtectedRoute>
+        ),
+      },
 
-  // --- RUTAS PRIVADAS: JEFE DE ÁREA ---
-  {
-    path: "/shortlist",
-    element: (
-      <ProtectedRoute>
-        <Shortlist />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/desempeño",
-    element: (
-      <ProtectedRoute>
-        <Performance />
-      </ProtectedRoute>
-    ),
+      // --- RUTAS PRIVADAS: RECLUTADOR ---
+      {
+        path: "/vacantes-publicadas",
+        element: (
+          <ProtectedRoute>
+            <PublishedVacancies role="recluiter" />
+          </ProtectedRoute>
+        ),
+      },
+
+      // --- RUTAS PRIVADAS: JEFE DE ÁREA ---
+      {
+        path: "/shortlist",
+        element: (
+          <ProtectedRoute>
+            <Shortlist role="manager" />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/desempeño",
+        element: (
+          <ProtectedRoute>
+            <Performance role="manager" />
+          </ProtectedRoute>
+        ),
+      },
+    ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <RouterProvider router={router} />
   </StrictMode>
 );

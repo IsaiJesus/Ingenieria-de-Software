@@ -4,7 +4,7 @@ import VacancyPreview from "../../components/VacancyPreview";
 
 export default function Vacancies() {
   return (
-    <Layout rol="candidate">
+    <Layout role="candidate">
       <Section title="Vacantes disponibles" id={false}>
         <VacancyPreview />
         <VacancyPreview />

@@ -6,7 +6,7 @@ import VacancyPublishedPreview from "../../components/VacancyPublishedPreview";
 
 export default function PublishedVacancies() {
   return (
-    <Layout rol="recluiter">
+    <Layout role="recluiter">
       <Section title="Vacantes publicadas" id={false}>
         <VacancyPublishedPreview />
         <VacancyPublishedPreview />

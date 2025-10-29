@@ -5,7 +5,7 @@ import Section from "../../components/Section";
 
 export default function Performance() {
   return (
-    <Layout rol="manager">
+    <Layout role="manager">
       <Section title="Shortlist de candidatos" id={false}>
         <div className="grid grid-cols-7 gap-4 px-6 mt-4 mb-1 text-sm text-gray-600">
           <p className="col-span-2">Nombre</p>
