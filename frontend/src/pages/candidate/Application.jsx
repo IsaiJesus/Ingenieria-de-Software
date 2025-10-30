@@ -1,24 +1,64 @@
-import { FaBrain, FaCheck, FaComments, FaRegCalendar, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import {
+  FaBrain,
+  FaCheck,
+  FaComments,
+  FaRegCalendar,
+  FaTimes,
+} from "react-icons/fa";
+import { transformTime } from "../../helpers/dateUtils";
 import Layout from "../../components/common/Layout";
 import Section from "../../components/Section";
+import ApplicationStepper from "../../components/ApplicationStepper";
 
 export default function Application({ text }) {
+  const { applicationId } = useParams();
+  const { user } = useAuth();
+  const [application, setApplication] = useState([]);
+
+  useEffect(() => {
+    if (!applicationId || !user) {
+      return;
+    }
+
+    const fetchApplication = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/applications/${applicationId}?candidate_id=${user.id}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Error al cargar la aplicación");
+        }
+        const data = await response.json();
+        setApplication(data);
+      } catch (error) {
+        console.error("Error fetching application:", error);
+        alert(error.message);
+      }
+    };
+
+    fetchApplication();
+  }, [applicationId, user]);
+
+  const appliedTimeAgo = transformTime(application.created_at);
+
   return (
     <Layout role="candidate">
       <Section id={true} text={text}>
         <div className="p-6 mb-6 bg-white shadow-md rounded-sm">
-          <h2 className="mb-3 text-xl font-semibold">Analista de datos</h2>
-          <div className="flex items-center">
+          <h2 className="mb-3 text-xl font-semibold">{application.title}</h2>
+          <div className="flex flex-col">
             <p className="flex items-center text-xs text-gray-600">
               <FaRegCalendar className="mr-2" />
-              Aplicado: Hace 3 días
-              <span className="mx-2 text-gray-400">•</span>
-              <span className="text-black font-semibold">$30,000 mensual</span>
+              Aplicado: {appliedTimeAgo}
             </p>
+            <p className="mt-4 mb-1 font-bold">{application.salary_range}</p>
           </div>
           <Link
-            to="/vacantes/vacanteId"
+            to={`/vacantes/${application.vacancy_id}`}
             className="inline-block py-1 px-3 my-3 w-fit rounded-xl text-xs text-blue-600 bg-blue-100 hover:text-blue-700 hover:bg-blue-200"
           >
             Ver más detalles de la aplicación
@@ -26,69 +66,11 @@ export default function Application({ text }) {
           <div className="mt-4 mb-6">
             <h3 className="text-lg font-semibold">Estado de la solicitud</h3>
             <p>
-              Se ha asignado la fecha de tu entrevista con el jefe del área para
-              el <strong>15 de octubre del 2025</strong>. El link de la reunión{" "}
-              <a
-                href="https://us04web.zoom.us/j/794770?pwd=yWsb5Msf"
-                className="text-blue-700 underline underline-offset-1"
-              >
-                https://us04web.zoom.us/j/794770?pwd=yWsb5Msf
-              </a>
-              . Para más información revisa el correo electrónico que te
-              enviamos.
+              {application.message !== null
+                ? application.message
+                : "Aún no hay actualizaciones, en cuanto haya te envieremos un correo electrónico y aparecerá en este apartado."}
             </p>
-            <div className="flex items-baseline justify-center p-4 my-4">
-              <div className="flex flex-col items-center justify-center mx-1">
-                <span className="flex items-center justify-center p-1 border-2 border-green-600 bg-none rounded-full text-2xl text-white">
-                  <span className="flex items-center justify-center p-3 bg-green-600 rounded-full">
-                    <FaCheck />
-                  </span>
-                </span>
-                <p className="mt-1 text-sm text-center">Aplicación</p>
-              </div>
-              <div className="mx-4 w-1/6 h-1 bg-green-600 rounded-xl"></div>
-              <div className="flex flex-col items-center justify-center mx-1">
-                <span className="flex items-center justify-center p-1 border-2 border-blue-600 bg-none rounded-full text-2xl text-white">
-                  <span className="flex items-center justify-center p-3 bg-blue-600 rounded-full">
-                    <FaBrain />
-                  </span>
-                </span>
-                <p className="mt-1 text-sm text-center">
-                  Prueba de idioma inglés
-                </p>
-              </div>
-              <div className="mx-4 w-1/6 h-1 bg-blue-100 rounded-xl"></div>
-              <div className="flex flex-col items-center justify-center mx-1">
-                <span className="flex items-center justify-center p-1 border-2 border-blue-100 bg-none rounded-full text-2xl text-blue-600">
-                  <span className="flex items-center justify-center p-3 bg-blue-100 rounded-full">
-                    <FaBrain />
-                  </span>
-                </span>
-                <p className="mt-1 text-sm text-center">Prueba técnica</p>
-              </div>
-              <div className="mx-4 w-1/6 h-1 bg-blue-100 rounded-xl"></div>
-              <div className="flex flex-col items-center justify-center mx-1">
-                <span className="flex items-center justify-center p-1 border-2 border-blue-100 bg-none rounded-full text-2xl text-blue-600">
-                  <span className="flex items-center justify-center p-3 bg-blue-100 rounded-full">
-                    <FaComments />
-                  </span>
-                </span>
-                <p className="mt-1 text-sm text-center">
-                  Entrevista con jefe de área
-                </p>
-              </div>
-              <div className="mx-4 w-1/6 h-1 bg-blue-100 rounded-xl"></div>
-              <div className="flex flex-col items-center justify-center mx-1">
-                <span className="flex items-center justify-center p-1 border-2 border-red-600 bg-none rounded-full text-2xl text-white">
-                  <span className="flex items-center justify-center p-3 bg-red-600 rounded-full">
-                    <FaTimes />
-                  </span>
-                </span>
-                <p className="mt-1 text-sm text-center">
-                  Rechazado
-                </p>
-              </div>
-            </div>
+            <ApplicationStepper currentStatus={application.status}/>
           </div>
         </div>
       </Section>

@@ -54,6 +54,11 @@ export default function Profile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(formData.password !== e.target.repPassword.value) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:3001/api/profile/${id}`, {
         method: 'PUT',
@@ -162,6 +167,8 @@ export default function Profile() {
             <input
               id="repPassword"
               type="password"
+              name="repPassword"
+              onChange={handleChange}
               className="p-2 mb-4 min-w-2xs text-sm border border-gray-500 rounded-sm"
             />
             {user && user.role === "candidate" && (

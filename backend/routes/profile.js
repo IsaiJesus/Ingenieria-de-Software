@@ -31,9 +31,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id: userId } = req.params;
-  
   const { name, email, password, gender, age, resume_link, role_id } = req.body;
-  // ¡Debes enviar el 'role_id' en el body desde el frontend!
 
   const client = await pool.connect();
 

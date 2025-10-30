@@ -6,6 +6,8 @@ const cors = require('cors');
 const userRoutes = require('./routes/users');
 const candidateRoutes = require('./routes/candidates');
 const profileRoutes = require('./routes/profile');
+const vacanciesRoutes = require('./routes/vacancies');
+const applicationsRoutes = require('./routes/applications');
 
 const app = express();
 const port = 3001;
@@ -18,6 +20,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/candidates', candidateRoutes);
 
 app.use('/api/profile', profileRoutes);
+
+app.use('/api/vacancies', vacanciesRoutes);
+
+app.use('/api/applications', applicationsRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor backend corriendo en http://localhost:${port}`);

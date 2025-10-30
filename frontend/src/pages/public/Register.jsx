@@ -21,6 +21,11 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(user.password !== e.target.repPassword.value) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/api/candidates", {
         method: "POST",
@@ -133,6 +138,8 @@ export default function Register() {
           <input
             id="repPassword"
             type="password"
+            name="repPassword"
+            onChange={handleChange}
             required
             className="p-2 mb-4 min-w-2xs text-sm border border-gray-500 rounded-sm"
           />
