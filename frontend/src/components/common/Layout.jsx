@@ -1,15 +1,15 @@
 import CandidateNavbar from "./CandidateNavbar";
 import ManagerNavbar from "./ManagerNavbar";
-import RecluiterNavbar from "./RecluiterNavbar";
+import RecruiterNavbar from "./RecruiterNavbar";
 
-export default function Layout({role, children}) {
+export default function Layout({role, children, btnPost, onSuccessfulSubmit}) {
   return (
     <main className="bg-gray-50 min-h-screen flex flex-col">
       {
         role === "candidate" ? <CandidateNavbar/> : null
       }
       {
-        role === "recluiter" ? <RecluiterNavbar/> : null
+        role === "recruiter" ? <RecruiterNavbar btnPost={btnPost} onSuccessfulSubmit={onSuccessfulSubmit}/> : null
       }
       {
         role === "manager" ? <ManagerNavbar/> : null

@@ -49,7 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/vacantes",
-        element: <Vacancies role="candidate" />,
+        element: <Vacancies />,
       },
 
       // --- RUTAS DE AUTENTICACIÓN ---
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
         path: "/vacantes/:vacancyId",
         element: (
           <ProtectedRoute>
-            <Vacancy text="vacantes" role="candidate" />
+            <Vacancy text="vacantes" />
           </ProtectedRoute>
         ),
       },
@@ -88,7 +88,7 @@ const router = createBrowserRouter([
         path: "/aplicaciones",
         element: (
           <ProtectedRoute>
-            <Applications role="candidate" />
+            <Applications />
           </ProtectedRoute>
         ),
       },
@@ -96,7 +96,7 @@ const router = createBrowserRouter([
         path: "/aplicaciones/:applicationId",
         element: (
           <ProtectedRoute>
-            <Application text="aplicaciones" role="candidate" />
+            <Application text="aplicaciones"  />
           </ProtectedRoute>
         ),
       },
@@ -106,7 +106,7 @@ const router = createBrowserRouter([
         path: "/vacantes-publicadas",
         element: (
           <ProtectedRoute>
-            <PublishedVacancies role="recluiter" />
+            <PublishedVacancies />
           </ProtectedRoute>
         ),
       },
@@ -116,7 +116,7 @@ const router = createBrowserRouter([
         path: "/shortlist",
         element: (
           <ProtectedRoute>
-            <Shortlist role="manager" />
+            <Shortlist />
           </ProtectedRoute>
         ),
       },
@@ -124,7 +124,7 @@ const router = createBrowserRouter([
         path: "/desempeño",
         element: (
           <ProtectedRoute>
-            <Performance role="manager" />
+            <Performance />
           </ProtectedRoute>
         ),
       },

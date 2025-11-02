@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import {
-  FaBrain,
-  FaCheck,
-  FaComments,
-  FaRegCalendar,
-  FaTimes,
-} from "react-icons/fa";
+import { FaRegCalendar } from "react-icons/fa";
 import { transformTime } from "../../helpers/dateUtils";
 import Layout from "../../components/common/Layout";
 import Section from "../../components/Section";
@@ -70,7 +64,7 @@ export default function Application({ text }) {
                 ? application.message
                 : "Aún no hay actualizaciones, en cuanto haya te envieremos un correo electrónico y aparecerá en este apartado."}
             </p>
-            <ApplicationStepper currentStatus={application.status}/>
+            <ApplicationStepper currentStatus={application.status} />
           </div>
         </div>
       </Section>

@@ -1,9 +1,36 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { FaSignOutAlt, FaStar, FaUser, FaUsers } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 export default function ManagerNavbar() {
   const { user, logout } = useAuth();
+  const [manager, setManager] = useState(null);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const fetchApplications = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/users?id=${user.id}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Error al cargar las aplicaciones");
+        }
+        const data = await response.json();
+        setManager(data);
+      } catch (error) {
+        console.error("Error fetching manager:", error);
+        alert(error.message);
+      }
+    };
+
+    fetchApplications();
+  }, [user]);
 
   const baseClasses =
     "flex items-center py-2 px-3 mx-2 font-semibold rounded-sm";
@@ -24,7 +51,11 @@ export default function ManagerNavbar() {
         className="flex flex-col justify-center font-bold text-xl text-blue-600"
       >
         <h1>Plataforma de RH</h1>
-        <p className="text-xs font-medium text-black">Liliana Solís Herrera</p>
+        {!user || !manager ? (
+          <p className="text-xs font-medium text-black">Cargando...</p>
+        ) : (
+          <p className="text-xs font-medium text-black">{manager.name}</p>
+        )}
       </Link>
       <div className="flex">
         <NavLink to="/shortlist" className={getNavLinkClasses}>

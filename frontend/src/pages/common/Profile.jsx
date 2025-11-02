@@ -22,7 +22,7 @@ export default function Profile() {
       setFormData({ ...formData, [e.target.name]: e.target.value });
 
   useEffect(() => {
-    const fetchProfileData = async () => {
+    const fetchProfile = async () => {
       try {
         const response = await fetch(`http://localhost:3001/api/profile/${id}`);
         
@@ -47,7 +47,7 @@ export default function Profile() {
     };
 
     if (id) {
-      fetchProfileData();
+      fetchProfile();
     }    
   }, [id]);
   

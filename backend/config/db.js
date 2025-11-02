@@ -1,4 +1,3 @@
-// config/db.js
 const { Pool } = require('pg');
 
 const user = process.env.DB_USER || 3000;

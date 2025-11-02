@@ -2,6 +2,40 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 
+router.get('/', async (req, res) => {
+  try {
+    const { id: userId } = req.query; 
+
+    const queryText = 'SELECT name FROM users WHERE id = $1;';
+
+    const { rows } = await pool.query(queryText, [userId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No existe el usuario' });
+    }
+    
+    res.json(rows[0]);
+
+  } catch (err) {
+    console.error('Error al obtener vacantes:', err);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+router.get('/managers', async (req, res) => {
+  try {
+    const queryText = 'SELECT id, name FROM users WHERE role_id = 3;';
+    
+    const { rows } = await pool.query(queryText);
+    
+    res.json(rows);
+
+  } catch (err) {
+    console.error('Error al obtener jefes de área:', err);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
 

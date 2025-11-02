@@ -29,7 +29,7 @@ export default function Vacancy({ text }) {
         );
         if (!vacancyRes.ok) throw new Error("Error al cargar la vacante");
         const vacancyData = await vacancyRes.json();
-        setVacancy(vacancyData[0]);
+        setVacancy(vacancyData);
 
         const checkUrl = `http://localhost:3001/api/applications/check?vacancy_id=${vacancyId}&candidate_id=${user.id}`;
         const checkRes = await fetch(checkUrl);

@@ -12,7 +12,7 @@ export default function Vacancies() {
         const response = await fetch("http://localhost:3001/api/vacancies");
 
         if (!response.ok) {
-          throw new Error("Error al cargar el perfil del usuario");
+          throw new Error("Error al cargar al cargar las vacantes");
         }
         const data = await response.json();
         setVacancies(data);

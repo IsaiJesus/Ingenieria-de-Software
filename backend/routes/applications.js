@@ -18,7 +18,9 @@ router.get("/", async (req, res) => {
       JOIN 
         vacancies AS vac ON app.vacancy_id = vac.id
       WHERE 
-        app.candidate_id = $1;
+        app.candidate_id = $1
+      ORDER BY
+        app.created_at DESC;
     `;
 
     const { rows } = await pool.query(queryText, [candidateId]);
@@ -26,6 +28,33 @@ router.get("/", async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error("Error al obtener vacantes:", err);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const { candidate_id: candidateId, vacancy_id: vacancyId } = req.body;
+
+    const status = "Aplicación";
+    const queryText = `
+      INSERT INTO applications (candidate_id, vacancy_id, status) 
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+
+    const { rows } = await pool.query(queryText, [
+      candidateId,
+      vacancyId,
+      status,
+    ]);
+
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    if (err.code === "23505") {
+      return res.status(409).json({ error: "Ya has aplicado a esta vacante" });
+    }
+    console.error("Error al crear la aplicación:", err);
     res.status(500).json({ error: "Error en el servidor" });
   }
 });
@@ -50,6 +79,46 @@ router.get("/check", async (req, res) => {
   } catch (err) {
     console.error("Error chequeando aplicación:", err);
     res.status(500).json({ error: "Error en el servidor al chequear" });
+  }
+});
+
+router.get("/manager-view", async (req, res) => {
+  try {
+    const { manager_id: managerId } = req.query;
+
+    if (!managerId) {
+      return res.status(400).json({ error: "Se requiere manager_id" });
+    }
+
+    const queryText = `
+      SELECT 
+        usr.id,
+        usr.name,
+        cand.gender,
+        cand.age,
+        cand.resume_link,
+        vac.id AS vacancy_id,
+	      app.id AS application_id,
+        app.status
+      FROM 
+        applications AS app
+      JOIN 
+        vacancies AS vac ON app.vacancy_id = vac.id
+      JOIN 
+        candidates AS cand ON app.candidate_id = cand.user_id
+      JOIN 
+        users AS usr ON cand.user_id = usr.id
+      WHERE 
+        vac.manager_id = $1
+      ORDER BY
+        app.created_at DESC; -- Muestra las aplicaciones más recientes primero
+    `;
+
+    const { rows } = await pool.query(queryText, [managerId]);
+    res.json(rows);
+  } catch (err) {
+    console.error("Error al obtener candidatos para manager:", err);
+    res.status(500).json({ error: "Error en el servidor" });
   }
 });
 
@@ -87,30 +156,57 @@ router.get("/:applicationId", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.patch("/:id/discard", async (req, res) => {
   try {
-    const { candidate_id: candidateId, vacancy_id: vacancyId } = req.body;
-
-    const status = "Aplicación";
+    const { id: applicationId } = req.params;
     const queryText = `
-      INSERT INTO applications (candidate_id, vacancy_id, status) 
-      VALUES ($1, $2, $3)
+      UPDATE applications 
+      SET status = 'Rechazado' 
+      WHERE id = $1 
       RETURNING *;
     `;
+    const { rows } = await pool.query(queryText, [applicationId]);
 
-    const { rows } = await pool.query(queryText, [
-      candidateId,
-      vacancyId,
-      status,
-    ]);
-
-    res.status(201).json(rows[0]);
-  } catch (err) {
-    if (err.code === "23505") {
-      return res.status(409).json({ error: "Ya has aplicado a esta vacante" });
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "No se encontró la aplicación" });
     }
-    console.error("Error al crear la aplicación:", err);
-    res.status(500).json({ error: "Error en el servidor" });
+    res.status(200).json({ 
+      message: "Candidato descartado exitosamente", 
+      data: rows[0] 
+    });
+  } catch (err) {
+    console.error('Error al descartar al candidato:', err);
+    res.status(500).json({
+      error: 'Error en el servidor',
+      detalle: err.message
+    });
+  }
+});
+
+router.patch("/:id/hire", async (req, res) => {
+  try {
+    const { id: applicationId } = req.params;
+    const queryText = `
+      UPDATE applications 
+      SET status = 'Aceptado' 
+      WHERE id = $1 
+      RETURNING *;
+    `;
+    const { rows } = await pool.query(queryText, [applicationId]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "No se encontró la aplicación" });
+    }
+    res.status(200).json({ 
+      message: "Candidato contratado exitosamente", 
+      data: rows[0] 
+    });
+  } catch (err) {
+    console.error('Error al contratar al candidato:', err);
+    res.status(500).json({
+      error: 'Error en el servidor',
+      detalle: err.message
+    });
   }
 });
 
