@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 
 export default function Interview({
@@ -47,12 +48,12 @@ export default function Interview({
         throw new Error(data.error || "No se pudo asignar la entrevista");
       }
 
-      alert("Entrevista asignada exitosamente");
+      toast.success("¡Entrevista asignada exitosamente!")
       onSuccessfulSubmit();
       setModalAssign(false);
     } catch (error) {
       console.error("Error al asignar entrevista:", error);
-      alert(`Error: ${error.message}`);
+      toast.error(error.message)
     }
   };
 

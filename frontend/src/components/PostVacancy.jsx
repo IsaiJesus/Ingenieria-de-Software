@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { FaTimes } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function PostVacancy({ setModal, onSuccessfulSubmit }) {
   const { user } = useAuth();
@@ -31,7 +32,6 @@ export default function PostVacancy({ setModal, onSuccessfulSubmit }) {
         setManagers(data);
       } catch (error) {
         console.error("Error fetching jefes de área:", error);
-        alert(error.message);
       }
     };
 
@@ -68,11 +68,12 @@ export default function PostVacancy({ setModal, onSuccessfulSubmit }) {
       }
 
       onSuccessfulSubmit();
+      toast.success("¡Vacante publicada exitosamente!")
       setModal(false);
 
     } catch (error) {
       console.error("Error al registrar vacante:", error);
-      alert(`Error: ${error.message}`);
+      toast.error(error.message)
     }
   };
 

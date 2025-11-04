@@ -65,8 +65,8 @@ const Step = ({ name, icon, state }) => {
 
 const RejectedStep = () => (
   <div className="flex flex-col items-center justify-center mx-1">
-    <span className="flex items-center justify-center p-1 border-2 border-red-600 bg-none rounded-full text-4xl text-white">
-      <span className="flex items-center justify-center p-5 bg-red-600 rounded-full">
+    <span className="flex items-center justify-center p-1 border-2 border-gray-600 bg-none rounded-full text-3xl text-white">
+      <span className="flex items-center justify-center p-4 bg-gray-600 rounded-full">
         <FaTimes />
       </span>
     </span>
@@ -76,8 +76,8 @@ const RejectedStep = () => (
 
 const AceptedStep = () => (
   <div className="flex flex-col items-center justify-center mx-1">
-    <span className="flex items-center justify-center p-1 border-2 border-green-600 bg-none rounded-full text-4xl text-white">
-      <span className="flex items-center justify-center p-5 bg-green-600 rounded-full">
+    <span className="flex items-center justify-center p-1 border-2 border-green-600 bg-none rounded-full text-3xl text-white">
+      <span className="flex items-center justify-center p-4 bg-green-600 rounded-full">
         <FaHandshake />
       </span>
     </span>

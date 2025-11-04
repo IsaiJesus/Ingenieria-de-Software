@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 
 export default function Hire({ application_id, name, setModalHire, onSuccessfulSubmit }) {
@@ -15,12 +16,12 @@ export default function Hire({ application_id, name, setModalHire, onSuccessfulS
         throw new Error(data.error || "No se pudo contratar al candidato");
       }
 
-      alert("Candidato contratado exitosamente");
+      toast.success("¡Candidato contratado exitosamente!");
       onSuccessfulSubmit();
       setModalHire(false);
     } catch (error) {
       console.error("Error al contratar:", error);
-      alert(`Error: ${error.message}`);
+      toast.error(error.message)
     }
   };
 

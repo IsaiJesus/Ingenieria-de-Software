@@ -25,7 +25,6 @@ export default function ManagerNavbar() {
         setManager(data);
       } catch (error) {
         console.error("Error fetching manager:", error);
-        alert(error.message);
       }
     };
 

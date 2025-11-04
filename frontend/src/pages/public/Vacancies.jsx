@@ -18,7 +18,6 @@ export default function Vacancies() {
         setVacancies(data);
       } catch (error) {
         console.error("Error fetching vacancies:", error);
-        alert(error.message);
       }
     };
 

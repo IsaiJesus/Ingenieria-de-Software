@@ -188,78 +188,21 @@ INSERT INTO interviews(
   'https://zoom.us/...'
 );
 
--- MODIFICACIONES
+-- Actualizaciones de estatus (simulados)
+UPDATE applications SET status = '' WHERE id = ;
 
-SELECT * FROM candidates;
-SELECT * FROM users;
-SELECT * FROM roles;
-
-SELECT * FROM vacancies;
-SELECT * FROM vacancies WHERE id = 1; 
-
-SELECT * FROM applications;
-SELECT * FROM applications WHERE candidate_id = 1;
-
--- 'Aplicación'
--- 'Prueba de idioma'
--- 'Prueba técnica'
--- 'Entrevista'
--- 'Rechazado'
--- 'Aceptado'
-
-UPDATE applications SET status = 'Prueba técnica' WHERE id = 1;
-
-INSERT INTO applications(
-	candidate_id,
-	vacancy_id,
-	status
-) VALUES(
-	1,
-	1,
-	'Aplicación'
-);
-
-SELECT * FROM applications;
-SELECT id FROM applications WHERE vacancy_id = 1 AND candidate_id = 1;
-
-SELECT * FROM users;
-SELECT * FROM candidates;
-SELECT * FROM roles;
-
-SELECT * FROM applications;
-SELECT * FROM vacancies WHERE id = 2;
-SELECT * FROM interviews;
-
-SELECT 
-	usr.id,
-	usr.name,
-    cand.gender,
-    cand.age,
-    cand.resume_link,
-	vac.id AS vacancy_id,
-	app.id AS application_id,
-	app.status
-FROM 
-    applications AS app
-JOIN 
-    vacancies AS vac ON app.vacancy_id = vac.id
-JOIN 
-    candidates AS cand ON app.candidate_id = cand.user_id
-JOIN 
-    users AS usr ON cand.user_id = usr.id
+-- Actualización de estatus (idioma)
+UPDATE applications 
+SET 
+  status = 'Prueba de idioma', 
+  message = 'Has avanzado a la prueba de idioma. Completa la evaluación en el siguiente enlace: <a href="https://link-de-prueba-idioma.com/test-123" target="_blank">Comenzar prueba de idioma</a>.'
 WHERE 
-    vac.manager_id = 3
-ORDER BY
-    app.created_at DESC;
+  id = ;
 
-SELECT * FROM interviews;
-SELECT * FROM applications;
-
-DELETE FROM interviews WHERE id = 1;
-
-SELECT * FROM applications;
-UPDATE applications SET status = 'Entrevista' WHERE id = 2;
-
-INSERT INTO roles (name) VALUES('employee');
-SELECT * FROM roles;
-
+-- Actualización de estatus (técnica)
+UPDATE applications 
+SET 
+  status = 'Prueba técnica', 
+  message = '¡Felicidades por avanzar! Tu siguiente paso es la prueba técnica. Complétala en el siguiente enlace: <a href="https://www.hackerrank.com/desafio-empresa-456" target="_blank">Comenzar desafío técnico</a>.'
+WHERE 
+  id = ;

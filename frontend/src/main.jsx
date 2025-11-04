@@ -7,12 +7,13 @@ import {
 } from "react-router-dom";
 import AuthLayout from "./components/common/AuthLayout.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
+import { Toaster } from "react-hot-toast";
 import "./index.css";
 
 // --- PÁGINAS PÚBLICAS ---
 import Login from "./pages/public/Login.jsx";
 import Register from "./pages/public/Register.jsx";
-
+import RecoverPassword from "./pages/public/RecoverPassword.jsx";
 import NotFound from "./pages/public/NotFound.jsx";
 
 import Vacancies from "./pages/public/Vacancies.jsx";
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: "/login/trabajador",
         element: <Login />,
+      },
+      {
+        path: "/recuperar-contraseña",
+        element: <RecoverPassword />,
       },
 
       {
@@ -134,6 +139,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <Toaster position="bottom-right" />
     <RouterProvider router={router} />
   </StrictMode>
 );

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import { FaIdCard } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 import Layout from "../../components/common/Layout";
 
 export default function Profile() {
@@ -17,6 +18,19 @@ export default function Profile() {
     age: '',
     resume_link: ''
   });
+
+  useEffect(() => {
+    const needsChange = localStorage.getItem('forcePasswordChange');
+    
+    if (needsChange) {
+      toast('Por tu seguridad, actualiza tu contraseña temporal.', {
+        duration: 6000,
+        icon: '⚠️',
+      });
+      
+      localStorage.removeItem('forcePasswordChange');
+    }
+  }, []);
 
   const handleChange = (e) =>
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,7 +56,6 @@ export default function Profile() {
 
       } catch (error) {
         console.error("Error fetching profile:", error);
-        alert(error.message);
       }
     };
 
@@ -55,7 +68,7 @@ export default function Profile() {
     e.preventDefault();
 
     if(formData.password !== e.target.repPassword.value) {
-      alert("Las contraseñas no coinciden");
+      toast.error('Las contraseñas no coinciden');
       return;
     }
 
@@ -74,12 +87,11 @@ export default function Profile() {
         throw new Error(data.error || 'Error al actualizar el perfil');
       }
 
-      alert('Perfil actualizado con éxito');
+      toast.success('¡Perfil actualizado con éxito!');
       setFormData(prev => ({ ...prev, password: '' }));
 
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert(`Error: ${error.message}`);
     }
   };
 
@@ -117,8 +129,8 @@ export default function Profile() {
                     onChange={handleChange}
                     className="p-2 mb-4 text-sm border border-gray-500 rounded-sm"
                   >
-                    <option value="masculino">Masculino</option>
-                    <option value="femenino">Femenino</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
                     <option value="otro">Otro</option>
                   </select>
                 </div>

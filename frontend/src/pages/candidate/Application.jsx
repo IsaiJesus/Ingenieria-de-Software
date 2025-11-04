@@ -30,7 +30,6 @@ export default function Application({ text }) {
         setApplication(data);
       } catch (error) {
         console.error("Error fetching application:", error);
-        alert(error.message);
       }
     };
 
@@ -55,14 +54,25 @@ export default function Application({ text }) {
             to={`/vacantes/${application.vacancy_id}`}
             className="inline-block py-1 px-3 my-3 w-fit rounded-xl text-xs text-blue-600 bg-blue-100 hover:text-blue-700 hover:bg-blue-200"
           >
-            Ver más detalles de la aplicación
+            Ver más detalles de la vacante
           </Link>
           <div className="mt-4 mb-6">
             <h3 className="text-lg font-semibold">Estado de la solicitud</h3>
             <p>
-              {application.message !== null
-                ? application.message
-                : "Aún no hay actualizaciones, en cuanto haya te envieremos un correo electrónico y aparecerá en este apartado."}
+              {application.status === "Aceptado" ? (
+                // Caso Aceptado
+                "¡Felicidades, bienvenido/a al equipo! 🎉 Estamos encantados de informarte que has sido seleccionado/a. Te hemos enviado un correo electrónico con información importante sobre los siguientes pasos de tu contratación."
+              ) : application.status === "Rechazado" ? (
+                // Caso Rechazado
+                "Agradecemos tu interés en esta vacante. Tras revisar tu postulación, hemos decidido no continuar con tu proceso en esta ocasión. Te animamos a seguir explorando nuestras otras vacantes."
+              ) : // Resto de casos
+              application.message !== null ? (
+                <span
+                  dangerouslySetInnerHTML={{ __html: application.message }}
+                />
+              ) : (
+                "¡Gracias por postularte! Te notificaremos cualquier avance por correo electrónico y en este mismo apartado."
+              )}
             </p>
             <ApplicationStepper currentStatus={application.status} />
           </div>

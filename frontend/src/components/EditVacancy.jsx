@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 
 export default function EditVacancy({ id, setModalEdit, onSuccessfulSubmit }) {
@@ -44,7 +45,7 @@ export default function EditVacancy({ id, setModalEdit, onSuccessfulSubmit }) {
         setManagers(managersData);
       } catch (error) {
         console.error("Error fetching data:", error);
-        alert(error.message);
+        toast.error(error.message);
         setModalEdit(false);
       } finally {
         setIsLoading(false);
@@ -81,9 +82,10 @@ export default function EditVacancy({ id, setModalEdit, onSuccessfulSubmit }) {
       
       onSuccessfulSubmit();
       setModalEdit(false);
+      toast.success("¡Vacante actualizada correctamente!")
     } catch (error) {
       console.error("Error al actualizar vacante:", error);
-      alert(`Error: ${error.message}`);
+      toast.error(error.message)
     }
   };
 

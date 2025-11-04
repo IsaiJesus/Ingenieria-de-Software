@@ -27,7 +27,6 @@ export default function RecruiterNavbar({ btnPost, onSuccessfulSubmit }) {
         setRecruiter(data);
       } catch (error) {
         console.error("Error fetching recruiter:", error);
-        alert(error.message);
       }
     };
 

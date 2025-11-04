@@ -27,7 +27,6 @@ export default function Applications() {
         setApplications(data);
       } catch (error) {
         console.error("Error fetching applications:", error);
-        alert(error.message);
       }
     };
 

@@ -5,6 +5,7 @@ import { transformTime } from "../../helpers/dateUtils";
 import { FaRegCalendar } from "react-icons/fa";
 import Layout from "../../components/common/Layout";
 import Section from "../../components/Section";
+import toast from "react-hot-toast";
 
 export default function Vacancy({ text }) {
   const { vacancyId } = useParams();
@@ -69,13 +70,13 @@ export default function Vacancy({ text }) {
       }
       const newApplication = await response.json();
 
-      // Actualiza el estado Y navega
       setHasApplied(true);
       setApplicationId(newApplication.id);
+      toast.success("¡Postulación enviada exitosamente!")
       navigate(`/aplicaciones/${newApplication.id}`);
     } catch (err) {
       console.error("Error al aplicar:", err.message);
-      alert(err.message);
+      toast.error(err.message)
     }
   };
 

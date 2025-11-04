@@ -1,4 +1,4 @@
-//import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 
 export default function EditVacancy({
@@ -21,6 +21,7 @@ export default function EditVacancy({
       }
 
       onSuccessfulSubmit();
+      toast.success("¡Vacante eliminada exitosamente!")
       setModalDelete(false);
     } catch (error) {
       console.error("Error al eliminar la vacante:", error);

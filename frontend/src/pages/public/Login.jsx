@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSignInAlt } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Login({ role }) {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function Login({ role }) {
 
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.detalle || "Error al iniciar sesión");
+        throw new Error(data.error || data.detalle || "Error al iniciar sesión");
       }
       const userId = data.id;
       const roleId = data.role_id;
@@ -48,8 +49,7 @@ export default function Login({ role }) {
         navigate("/shortlist");
       }
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      alert(`Error: ${error.message}`);
+      toast.error(error.message);
     }
   };
 
@@ -85,9 +85,9 @@ export default function Login({ role }) {
             value={user.password}
             className="p-2 mb-2 min-w-2xs text-sm border border-gray-500 rounded-sm"
           />
-          <button className="self-end text-xs font-semibold cursor-pointer text-blue-600 hover:text-blue-700">
+          <Link to="/recuperar-contraseña" className="self-end text-xs font-semibold cursor-pointer text-blue-600 hover:text-blue-700">
             ¿Olvidaste tu contraseña?
-          </button>
+          </Link>
           <button
             className="py-2 px-6 mt-6 font-semibold rounded-sm cursor-pointer text-white bg-blue-600 hover:bg-blue-700"
           >

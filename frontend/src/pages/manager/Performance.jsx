@@ -18,7 +18,6 @@ export default function Performance() {
         setEmployees(data);
       } catch (error) {
         console.error("Error fetching employees:", error);
-        alert(error.message);
       }
     };
 

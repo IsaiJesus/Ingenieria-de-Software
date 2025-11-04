@@ -1,7 +1,8 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 import { FaUserPlus } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Register() {
     e.preventDefault();
 
     if(user.password !== e.target.repPassword.value) {
-      alert("Las contraseñas no coinciden");
+      toast.error('Las contraseñas no coinciden');
       return;
     }
 
@@ -45,7 +46,6 @@ export default function Register() {
       navigate("/");
     } catch (error) {
       console.error("Error al registrar:", error);
-      alert(`Error: ${error.message}`);
     }
   };
 
@@ -159,7 +159,7 @@ export default function Register() {
           <Link to="/login" className="w-full flex items-center justify-center text-xs mt-2">
             <p>
               ¿Ya tienes cuenta?&nbsp;
-              <button className="text-xs font-semibold text-green-600 hover:text-green-700">
+              <button className="text-xs font-semibold text-green-600 cursor-pointer hover:text-green-700">
                 Inicia sesión
               </button>
             </p>

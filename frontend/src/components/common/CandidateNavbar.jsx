@@ -1,6 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { FaPaste, FaSignOutAlt, FaSuitcase, FaUser } from "react-icons/fa";
+import {
+  FaPaste,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaSuitcase,
+  FaUser,
+} from "react-icons/fa";
 
 export default function CandidateNavbar() {
   const { user, logout } = useAuth();
@@ -32,19 +38,26 @@ export default function CandidateNavbar() {
           Mis aplicaciones
         </NavLink>
       </div>
-      <div className="flex">
-        <button
-          onClick={() => logout()}
-          className="flex items-center py-2 px-3 mx-2 font-semibold rounded-sm cursor-pointer text-gray-600 bg-none hover:text-blue-600 hover:bg-blue-100"
-        >
-          <FaSignOutAlt className="mr-2" />
-          Cerrar sesión
-        </button>
-        <NavLink to={`/perfil/${user.id}`} className={getNavLinkClasses}>
-          <FaUser className="mr-2" />
-          Perfil
+      {user ? (
+        <div className="flex">
+          <button
+            onClick={() => logout()}
+            className="flex items-center py-2 px-3 mx-2 font-semibold rounded-sm cursor-pointer text-gray-600 bg-none hover:text-blue-600 hover:bg-blue-100"
+          >
+            <FaSignOutAlt className="mr-2" />
+            Cerrar sesión
+          </button>
+          <NavLink to={`/perfil/${user.id}`} className={getNavLinkClasses}>
+            <FaUser className="mr-2" />
+            Perfil
+          </NavLink>
+        </div>
+      ) : (
+        <NavLink to="/login" className={getNavLinkClasses}>
+          <FaSignInAlt className="mr-2" />
+          Iniciar sesión
         </NavLink>
-      </div>
+      )}
     </nav>
   );
 }

@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 
 export default function Discard({
@@ -20,12 +21,12 @@ export default function Discard({
         throw new Error(data.error || "No se pudo descartar al candidato");
       }
 
-      alert("Candidato descartado exitosamente");
+      toast.success("¡Candidato descartado exitosamente!")
       onSuccessfulSubmit();
       setModalDiscard(false);
     } catch (error) {
       console.error("Error al descartar:", error);
-      alert(`Error: ${error.message}`);
+      toast.error(error.message)
     }
   };
 

@@ -20,7 +20,6 @@ export default function Shortlist() {
       setCandidates(data);
     } catch (error) {
       console.error("Error fetching candidates:", error);
-      alert(error.message);
     }
   }, [manager]);
 
