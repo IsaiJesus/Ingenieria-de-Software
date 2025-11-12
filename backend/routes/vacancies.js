@@ -4,7 +4,11 @@ const pool = require("../config/db");
 
 router.get("/", async (req, res) => {
   try {
-    const queryText = "SELECT * FROM vacancies ORDER BY created_at DESC;";
+    const queryText = `
+      SELECT * FROM vacancies 
+      WHERE expiration_date >= CURRENT_DATE 
+      ORDER BY created_at DESC;
+    `;
 
     const { rows } = await pool.query(queryText);
 
