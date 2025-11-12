@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaIdCard } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
@@ -10,50 +10,55 @@ export default function Profile() {
   const { user } = useAuth();
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    role_id: id ? id : 1,
-    gender: '',
-    age: '',
-    resume_link: ''
+    name: "",
+    email: "",
+    password: "",
+    role_id: 1,
+    gender: "",
+    age: "",
+    resume_link: "",
   });
 
+  const [resumeFile, setResumeFile] = useState(null);
+
   useEffect(() => {
-    const needsChange = localStorage.getItem('forcePasswordChange');
-    
+    const needsChange = localStorage.getItem("forcePasswordChange");
+
     if (needsChange) {
-      toast('Por tu seguridad, actualiza tu contraseña temporal.', {
+      toast("Por tu seguridad, actualiza tu contraseña temporal.", {
         duration: 6000,
-        icon: '⚠️',
+        icon: "⚠️",
       });
-      
-      localStorage.removeItem('forcePasswordChange');
+
+      localStorage.removeItem("forcePasswordChange");
     }
   }, []);
 
   const handleChange = (e) =>
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleFileChange = (e) => {
+    setResumeFile(e.target.files[0]);
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await fetch(`http://localhost:3001/api/profile/${id}`);
-        
+
         if (!response.ok) {
-          throw new Error('Error al cargar el perfil del usuario');
+          throw new Error("Error al cargar el perfil del usuario");
         }
         const data = await response.json();
         setFormData({
-          name: data.name || '',
-          email: data.email || '',
+          name: data.name || "",
+          email: data.email || "",
           role_id: data.role_id,
-          gender: data.gender || '',
-          age: data.age || '',
-          resume_link: data.resume_link || '',
-          password: ''
+          gender: data.gender || "",
+          age: data.age || "",
+          resume_link: data.resume_link || "",
+          password: "",
         });
-
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -61,35 +66,56 @@ export default function Profile() {
 
     if (id) {
       fetchProfile();
-    }    
+    }
   }, [id]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(formData.password !== e.target.repPassword.value) {
-      toast.error('Las contraseñas no coinciden');
+    if (formData.password !== e.target.repPassword.value) {
+      toast.error("Las contraseñas no coinciden");
       return;
+    }
+
+    const submissionData = new FormData();
+
+    submissionData.append("name", formData.name);
+    submissionData.append("email", formData.email);
+    submissionData.append("gender", formData.gender);
+    submissionData.append("age", formData.age);
+    submissionData.append("password", formData.password);
+    submissionData.append("role_id", formData.role_id);
+
+    if (resumeFile) {
+      submissionData.append("resume", resumeFile);
     }
 
     try {
       const response = await fetch(`http://localhost:3001/api/profile/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), 
+        method: "PUT",
+        body: submissionData,
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Error al actualizar el perfil');
+        throw new Error(data.error || "Error al actualizar el perfil");
       }
 
-      toast.success('¡Perfil actualizado con éxito!');
-      setFormData(prev => ({ ...prev, password: '' }));
+      toast.success("¡Perfil actualizado con éxito!");
 
+      if (data.new_resume_link) {
+        setFormData((prev) => ({
+          ...prev,
+          password: "",
+          resume_link: data.new_resume_link,
+        }));
+      } else {
+        setFormData((prev) => ({ ...prev, password: "" }));
+      }
+
+      setResumeFile(null);
+      e.target.resume.value = null;
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -103,7 +129,10 @@ export default function Profile() {
             <FaIdCard />
           </div>
           <h1 className="my-4 text-xl font-bold">Editar cuenta</h1>
-          <form onSubmit={handleSubmit} className="flex flex-col justify-center">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center"
+          >
             <label htmlFor="name" className="mb-1 text-xs">
               Nombre completo
             </label>
@@ -185,17 +214,29 @@ export default function Profile() {
             />
             {user && user.role === "candidate" && (
               <>
-                <label htmlFor="resume_link" className="mb-1 text-xs">
+                <label htmlFor="resume" className="mb-1 text-xs">
                   Currículum vitae
                 </label>
-                <input
-                  id="resume_link"
-                  type="file"
-                  name="resume_link"
-                  onChange={handleChange}
-                  accept=".pdf,.doc,.docx"
-                  className="p-2 mb-2 min-w-2xs max-w-xs text-sm border border-dashed border-gray-500 rounded-sm"
-                />
+                {
+                  <input
+                    id="resume"
+                    type="file"
+                    name="resume"
+                    onChange={handleFileChange}
+                    accept=".pdf,.doc,.docx"
+                    className="p-2 mb-2 min-w-2xs max-w-xs text-sm border border-dashed border-gray-500 rounded-sm"
+                  />
+                }
+                {formData.resume_link && (
+                  <a
+                    href={formData.resume_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs  text-blue-600 hover:underline ml-1"
+                  >
+                    CV actual
+                  </a>
+                )}
               </>
             )}
             <button

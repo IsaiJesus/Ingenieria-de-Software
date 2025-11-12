@@ -13,11 +13,17 @@ export default function Register() {
     age: 18,
     email: "",
     password: "",
-    resume: "ejemplo.com/cv.pdf",
+    //resume: "",
   });
+
+  const [resumeFile, setResumeFile] = useState(null);
 
   const handleChange = (e) =>
     setUser({ ...user, [e.target.name]: e.target.value });
+
+  const handleFileChange = (e) => {
+    setResumeFile(e.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,13 +33,25 @@ export default function Register() {
       return;
     }
 
+    if (!resumeFile) {
+      toast.error('Por favor, sube tu currículum vitae.');
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('name', user.name);
+    formData.append('gender', user.gender);
+    formData.append('age', user.age);
+    formData.append('email', user.email);
+    formData.append('password', user.password);
+
+    formData.append('resume', resumeFile);
+
     try {
       const response = await fetch("http://localhost:3001/api/candidates", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
+        body: formData,
       });
 
       const data = await response.json();
@@ -46,6 +64,7 @@ export default function Register() {
       navigate("/");
     } catch (error) {
       console.error("Error al registrar:", error);
+      toast.error(error.message || "Error al registrar");
     }
   };
 
@@ -151,6 +170,8 @@ export default function Register() {
             type="file"
             name="resume"
             accept=".pdf,.doc,.docx"
+            onChange={handleFileChange}
+            required
             className="p-2 mb-2 min-w-2xs max-w-xs text-sm border border-dashed border-gray-500 rounded-sm"
           />
           <button className="py-2 px-6 mt-6 font-semibold rounded-sm cursor-pointer text-white bg-green-600 hover:bg-green-700">

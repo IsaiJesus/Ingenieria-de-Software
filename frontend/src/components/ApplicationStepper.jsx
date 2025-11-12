@@ -101,7 +101,15 @@ const ApplicationStepper = ({ currentStatus }) => {
     );
   }
 
-  const currentIndex = STEPS.findIndex(step => step.name === currentStatus);
+  let effectiveStatus = currentStatus;
+  if (currentStatus === 'Pruebas completadas') {
+    effectiveStatus = 'Prueba técnica';
+  }
+
+  // Usa el estado "efectivo" para encontrar el índice
+  const currentIndex = STEPS.findIndex(step => step.name === effectiveStatus);
+
+  //const currentIndex = STEPS.findIndex(step => step.name === currentStatus);
 
   return (
     <div className="flex items-baseline justify-center p-4 my-4">

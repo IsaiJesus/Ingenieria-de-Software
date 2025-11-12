@@ -49,11 +49,15 @@ create table applications (
       'Aplicación',
       'Prueba de idioma',
       'Prueba técnica',
+      'Pruebas completadas',
       'Entrevista',
       'Rechazado',
 	    'Aceptado'
     )
   ) not null,
+  language_test_result SMALLINT DEFAULT NULL,
+  technical_test_result SMALLINT DEFAULT NULL,
+  ia_shortlisted BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
