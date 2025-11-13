@@ -42,8 +42,8 @@ export default function Shortlist() {
         </div>
         {candidates.length === 0 ? (
           <div className="flex flex-col items-center mt-8 p-2">
-            <h4 className="text-xl font-semibold">
-              No hay candidatos que hayan aplicado a alguna vacante.
+            <h4 className="text-xl text-center font-semibold">
+              No hay candidatos que hayan aplicado a alguna vacante o que hayan pasado las pruebas asignadas.
             </h4>
           </div>
         ) : (
