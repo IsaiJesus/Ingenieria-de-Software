@@ -11,15 +11,24 @@ const pdf = require('pdf-parse');
 
 const IA_API_URL = 'http://localhost:5001/predict';
 
-async function fetchResumeText(resumePath) {
+async function fetchResumeText(resumeUrl) { // Renombré a resumeUrl por claridad
   try {
-    // Ajusta esta ruta según cómo guardes tus CVs
-    // ej. const fullPath = require('path').join(__dirname, '..', 'uploads', resumePath);
-    const dataBuffer = fs.readFileSync(resumePath);
+    // 1. Descargar el PDF desde la URL
+    // Le pedimos a axios que nos dé la respuesta como un 'arraybuffer'
+    const response = await axios.get(resumeUrl, {
+      responseType: 'arraybuffer' 
+    });
+
+    // 2. Convertir la respuesta (ArrayBuffer) en un Buffer de Node.js
+    const dataBuffer = Buffer.from(response.data);
+
+    // 3. Usar pdf-parse con el Buffer (esto ya lo tenías)
     const data = await pdf(dataBuffer);
     return data.text;
+    
   } catch (error) {
-    console.error('Error al leer el PDF:', error.message);
+    // Manejar errores si la URL no existe o el archivo está corrupto
+    console.error('Error al descargar o leer el PDF desde la URL:', error.message);
     throw new Error('No se pudo extraer el texto del CV.');
   }
 }

@@ -18,8 +18,59 @@ except FileNotFoundError:
 
 lemmatizer = WordNetLemmatizer()
 stop_words_set = set(stopwords.words('english'))
-ACTION_VERBS = ['accomplished', 'managed', ...] 
-SOFT_SKILLS = ['communication', 'teamwork', ...]
+ACTION_VERBS = [
+    'accomplished', 'accelerated', 'achieved', 'acted', 'added', 'adapted', 
+    'addressed', 'administered', 'advised', 'allocated', 'analyzed', 
+    'appraised', 'approved', 'arbitrated', 'arranged', 'assembled', 
+    'assessed', 'assigned', 'assisted', 'attained', 'audited', 'authored', 
+    'balanced', 'broadened', 'budgeted', 'built', 'calculated', 'cataloged', 
+    'centralized', 'chaired', 'changed', 'clarified', 'classified', 'coached', 
+    'collaborated', 'collected', 'communicated', 'compiled', 'completed', 
+    'composed', 'computed', 'conceived', 'conceptualized', 'concluded', 
+    'conducted', 'consolidated', 'constructed', 'contracted', 'controlled', 
+    'convinced', 'coordinated', 'corresponded', 'counseled', 'created', 
+    'critiqued', 'customized', 'defined', 'delegated', 'delivered', 
+    'demonstrated', 'demystified', 'derived', 'designed', 'determined', 
+    'developed', 'devised', 'diagnosed', 'directed', 'discovered', 
+    'dispatched', 'documented', 'drafted', 'earned', 'edited', 'educated', 
+    'enabled', 'encouraged', 'energized', 'engineered', 'enhanced', 
+    'enlisted', 'established', 'evaluated', 'examined', 'executed', 
+    'expanded', 'expedited', 'explained', 'extracted', 'fabricated', 
+    'facilitated', 'familiarized', 'fashioned', 'forecasted', 'formed', 
+    'formulated', 'founded', 'gained', 'gathered', 'generated', 'goals', 
+    'guided', 'handled', 'headed', 'illustrated', 'impacted', 'implemented', 
+    'improved', 'increased', 'influenced', 'informed', 'initiated', 
+    'inspected', 'installed', 'instituted', 'instructed', 'integrated', 
+    'interpreted', 'interviewed', 'introduced', 'invented', 'investigated', 
+    'launched', 'led', 'lectured', 'liaised', 'maintained', 'managed', 
+    'marketed', 'mastered', 'maximized', 'mediated', 'minimized', 'modeled', 
+    'moderated', 'monitored', 'motivated', 'negotiated', 'operated', 
+    'optimized', 'orchestrated', 'organized', 'originated', 'overhauled', 
+    'oversaw', 'participated', 'performed', 'persuaded', 'planned', 
+    'predicted', 'prepared', 'presented', 'prioritized', 'processed', 
+    'produced', 'programmed', 'projected', 'promoted', 'proposed', 
+    'provided', 'proved', 'publicized', 'purchased', 'reconciled', 
+    'recorded', 'recruited', 'redesigned', 'reduced', 'referred', 
+    'regulated', 'rehabilitated', 'reinforced', 'remodeled', 'reorganized', 
+    'repaired', 'reported', 'represented', 'researched', 'resolved', 
+    'retrieved', 'reviewed', 'revised', 'revitalized', 'rewrote', 
+    'scheduled', 'screened', 'selected', 'served', 'set', 'shaped', 
+    'simplified', 'sold', 'solved', 'spearheaded', 'specified', 'spoke', 
+    'standardized', 'steered', 'stimulated', 'streamlined', 'strengthened', 
+    'structured', 'studied', 'suggested', 'summarized', 'supervised', 
+    'supported', 'surpassed', 'surveyed', 'synthesized', 'systematized', 
+    'tabulated', 'taught', 'tested', 'trained', 'translated', 'unified', 
+    'updated', 'upgraded', 'utilized', 'validated', 'verbalized', 
+    'verified', 'visualized', 'wrote'
+]
+SOFT_SKILLS = [
+    'adaptability', 'collaboration', 'communication', 'creativity', 
+    'critical thinking', 'decision-making', 'detail-oriented', 'empathy', 
+    'flexibility', 'initiative', 'interpersonal', 'leadership', 
+    'management', 'mentoring', 'motivated', 'negotiation', 'organization', 
+    'patience', 'persuasion', 'planning', 'problem solving', 'proactive', 
+    'resourceful', 'teamwork', 'time management'
+]
 
 def count_words(text, word_list):
     count = 0
