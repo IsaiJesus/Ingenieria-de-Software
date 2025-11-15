@@ -1,0 +1,12 @@
+.env
+
+nltk_data/
+
+*.png
+
+__pycache__/
+
+venv/
+env/
+
+.vscode/

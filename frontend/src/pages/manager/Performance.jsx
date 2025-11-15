@@ -2,27 +2,41 @@ import { useEffect, useState } from "react";
 import Layout from "../../components/common/Layout";
 import PerformanceWorker from "../../components/PerformanceWorker";
 import Section from "../../components/Section";
+import { useAuth } from "../../context/AuthContext";
+import Evaluation from "../../components/Evaluation";
 
 export default function Performance() {
+  const { user } = useAuth();
+
   const [employees, setEmployees] = useState([]);
   const [modal, setModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+
+  const fetchEmployees = async () => {
+    try {
+      const url = `http://localhost:3001/api/employees/manager-view`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Error al cargar los empleados");
+      const data = await response.json();
+      setEmployees(data);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const url = `http://localhost:3001/api/employees/manager-view`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Error al cargar los empleados");
-
-        const data = await response.json();
-        setEmployees(data);
-      } catch (error) {
-        console.error("Error fetching employees:", error);
-      }
-    };
-
     fetchEmployees();
   }, []);
+
+  const handleEvaluationComplete = () => {
+    setModal(false);
+    fetchEmployees();
+  };
+
+  const handleOpenModal = (employee) => {
+    setSelectedEmployee(employee);
+    setModal(true);
+  };
 
   return (
     <Layout role="manager">
@@ -42,10 +56,22 @@ export default function Performance() {
           </div>
         ) : (
           employees.map((employee) => (
-            <PerformanceWorker key={employee.id} {...employee} modal={modal} setModal={setModal}/>
+            <PerformanceWorker
+              key={employee.id}
+              {...employee}
+              onEvaluateClick={() => handleOpenModal(employee)}
+            />
           ))
         )}
       </Section>
+      {modal && selectedEmployee && (
+        <Evaluation
+          managerId={user.id}
+          employeeData={selectedEmployee}
+          setModal={setModal}
+          onEvaluationComplete={handleEvaluationComplete}
+        />
+      )}
     </Layout>
   );
 }

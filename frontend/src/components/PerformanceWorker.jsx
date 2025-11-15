@@ -1,5 +1,4 @@
 import { FaDownload } from "react-icons/fa";
-import Evaluation from "../components/Evaluation"
 
 export default function PerformanceWorker({
   name,
@@ -7,8 +6,7 @@ export default function PerformanceWorker({
   age,
   plots_link,
   period,
-  modal,
-  setModal,
+  onEvaluateClick
 }) {
   return (
     <>
@@ -19,6 +17,8 @@ export default function PerformanceWorker({
         {plots_link !== null ? (
           <a
             href={plots_link}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center justify-self-start text-blue-600 cursor-pointer hover:text-blue-700"
           >
             <FaDownload className="mr-1" /> Descargar
@@ -35,14 +35,13 @@ export default function PerformanceWorker({
           </button>
         ) : (
           <button
-            onClick={() => setModal(true)}
+            onClick={onEvaluateClick}
             className="py-2 px-4 text-base font-semibold rounded-sm cursor-pointer text-white bg-blue-600 hover:bg-blue-700"
           >
             Calificar
           </button>
         )}
       </div>
-      {modal && <Evaluation name={name} setModal={setModal} />}
     </>
   );
 }

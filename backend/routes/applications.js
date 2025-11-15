@@ -340,7 +340,7 @@ router.post("/:id/send_language_test", async (req, res) => {
         <h1>Hola, ${user.name},</h1>
         <p>Hemos revisado tu aplicación para <strong>${vacancy.title}</strong> y queremos invitarte al primer paso.</p>
         <p>Este paso es una prueba de idioma. Por favor, ingresa al siguiente enlace para completarla:</p>
-        <p><a href="[AQUÍ VA TU LINK SIMULADO A LA PRUEBA DE IDIOMA]">Acceder a la Prueba de Idioma</a></p>
+        <p><a href="[LINK]" style="color: #007bff; text-decoration: none; font-weight: bold;">Acceder a la Prueba de Idioma</a></p>
         <br>
         <p>¡Mucho éxito!</p>
         <p>Atentamente,<br>El equipo de Recursos Humanos</p>
@@ -418,7 +418,7 @@ router.post("/:id/submit_language_test", async (req, res) => {
         <p>¡Felicidades! Has aprobado la prueba de idioma.</p>
         <p>El siguiente paso en tu proceso para la vacante de <strong>${vacancy.title}</strong> es la prueba técnica.</p>
         <p>Por favor, ingresa al siguiente enlace para completarla:</p>
-        <p><a href="[AQUÍ VA TU LINK SIMULADO A LA PRUEBA TÉCNICA]">Acceder a la Prueba Técnica</a></p>
+        <p><a href="[LINK]" style="color: #007bff; text-decoration: none; font-weight: bold;">Acceder a la Prueba Técnica</a></p>
         <br>
         <p>¡Mucho éxito!</p>
         <p>Atentamente,<br>El equipo de Recursos Humanos</p>

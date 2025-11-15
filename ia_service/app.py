@@ -6,6 +6,21 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet, stopwords
 from flask import Flask, request, jsonify
 
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+from dotenv import load_dotenv
+import sys
+from supabase import create_client, Client
+import unicodedata
+
+load_dotenv()
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+BUCKET_NAME = "plots"
+
 print("Cargando artefactos de IA...")
 try:
     PREPROCESSOR = joblib.load('./model_artifacts/preprocessor.pkl')
@@ -104,7 +119,6 @@ def clean_and_process_resume(raw_text):
     ]
     return ' '.join(lemmatized_tokens)
 
-# --- Inicializar Flask ---
 app = Flask(__name__)
 
 # --- Crear el Endpoint de Predicción ---
@@ -145,6 +159,115 @@ def predict():
     except Exception as e:
         print(f"Error en la predicción: {e}")
         return jsonify({'error': str(e)}), 400
+
+def sanitize_filename(name):
+    # Quita acentos
+    s = unicodedata.normalize('NFKD', name).encode('ascii', 'ignore').decode('utf-8')
+    # Reemplaza espacios
+    s = s.replace(' ', '_')
+    # Elimina caracteres no válidos (se queda con letras, números, _, .)
+    s = re.sub(r'[^\w.-]', '', s)
+    return s.lower()    
+
+def generar_grafica_radar(nombre_empleado, info_contexto, ratings_dict, ruta_guardado):
+    keys = [
+        "Eficiencia",
+        "Resolución de Problemas",
+        "Trabajo en Equipo",
+        "Puntualidad",
+        "Calidad del Trabajo"
+    ]
+    
+    labels = [
+        "Eficiencia",
+        "Resolución de\nProblemas", 
+        "Trabajo en Equipo",
+        "Puntualidad",
+        "Calidad del\nTrabajo"
+    ]
+    
+    calificaciones = [ratings_dict[key] for key in keys]
+    N = len(keys)
+    
+    angulos = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
+    calificaciones += calificaciones[:1]
+    angulos += angulos[:1]
+    
+    fig, ax = plt.subplots(figsize=(7, 7), subplot_kw=dict(polar=True))
+    ax.set_ylim(0, 5)
+    ax.set_rgrids([1, 2, 3, 4, 5], color="grey", alpha=0.4, size=9)
+    ax.set_rlabel_position(0)
+    ax.set_xticks(angulos[:-1])
+    ax.set_xticklabels(labels, size=11)
+    ax.tick_params(colors='black', size=10)
+    
+    ax.plot(angulos, calificaciones, color='#007bff', linewidth=2, linestyle='solid', marker='o')
+    ax.fill(angulos, calificaciones, color='#007bff', alpha=0.25)
+    
+    fig.suptitle(f"{nombre_empleado}", size=16, color='black', weight='bold')
+    subtitulo = (
+        f"Edad: {info_contexto['age']}  |  "
+        f"Género: {info_contexto['gender']}  |  "
+        f"Periodo: {info_contexto['period']}"
+    )
+    ax.set_title(subtitulo, size=11, color='gray', pad=20) 
+    
+    fig.tight_layout(rect=[0, 0.03, 1, 0.90]) 
+    
+    plt.savefig(ruta_guardado, dpi=100)
+    plt.close(fig)
+    print(f"Gráfica temporal guardada en: {ruta_guardado}")
+
+@app.route('/generate-graph', methods=['POST'])
+def generate_graph():
+    try:
+        data = request.json
+        
+        employee_name = data['employee_name']
+        context_info = data['context_info'] # <- 'contextInfo'
+        ratings_dict = data['ratings_dict'] # <- 'ratings'
+
+        sanitized_name = sanitize_filename(employee_name)
+        temp_file_name = f"eval_{sanitized_name}.png"
+
+        # Definir rutas de archivos
+        # (Guardamos en la misma carpeta de la app)
+        temp_file_path = os.path.join(os.path.dirname(__file__), temp_file_name)
+        
+        # Generar la gráfica
+        generar_grafica_radar(employee_name, context_info, ratings_dict, temp_file_path)
+
+        # Subir a Supabase
+        print(f"Subiendo {temp_file_path} a Supabase bucket: {BUCKET_NAME}...")
+        file_options = {
+            "cache-control": "3600", 
+            "upsert": "true",
+            "content-disposition": f"attachment; filename=\"{temp_file_name}\"",
+            "content_type": "image/png"
+        }
+        with open(temp_file_path, 'rb') as f:
+            supabase.storage.from_(BUCKET_NAME).upload(
+                file=f,
+                path=temp_file_name,
+                file_options=file_options # 'upsert: true' sobrescribe
+            )
+        
+        # Obtener la URL pública
+        public_url = supabase.storage.from_(BUCKET_NAME).get_public_url(temp_file_name)
+        print(f"URL Pública: {public_url}")
+
+        # Limpiar archivo temporal
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+            print(f"Archivo temporal {temp_file_path} eliminado.")
+
+        # Devolver la URL a Node.js
+        return jsonify({'plot_link': public_url})
+
+    except Exception as e:
+        print(f"Error en /generate-graph: {e}")
+        return jsonify({'error': str(e)}), 400
+
 
 if __name__ == '__main__':
     app.run(port=5001, host='0.0.0.0')
