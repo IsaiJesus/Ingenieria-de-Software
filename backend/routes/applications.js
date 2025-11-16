@@ -252,56 +252,141 @@ router.get("/:applicationId", async (req, res) => {
 });
 
 router.patch("/:id/discard", async (req, res) => {
+  const { id: applicationId } = req.params;
+  let client;
+
   try {
-    const { id: applicationId } = req.params;
-    const queryText = `
+    client = await pool.connect();
+    await client.query("BEGIN");
+
+    const updateQuery = `
       UPDATE applications 
       SET status = 'Rechazado' 
       WHERE id = $1 
-      RETURNING *;
+      RETURNING candidate_id, vacancy_id;
     `;
-    const { rows } = await pool.query(queryText, [applicationId]);
+    const { rows: [updatedApp] } = await client.query(updateQuery, [applicationId]);
 
-    if (rows.length === 0) {
+    if (!updatedApp) {
       return res.status(404).json({ error: "No se encontró la aplicación" });
     }
+
+    const { rows: [candidate] } = await client.query(
+      "SELECT name, email FROM users WHERE id = $1",
+      [updatedApp.candidate_id]
+    );
+    const { rows: [vacancy] } = await client.query(
+      "SELECT title FROM vacancies WHERE id = $1",
+      [updatedApp.vacancy_id]
+    );
+
+    if (candidate && vacancy) {
+      const subject = `Actualización sobre tu postulación para: ${vacancy.title}`;
+      const htmlBody = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h1>Hola, ${candidate.name},</h1>
+          <p>Te agradecemos tu interés y el tiempo dedicado a tu postulación para la vacante de <strong>${vacancy.title}</strong>.</p>
+          <p>En esta ocasión, hemos decidido continuar en el proceso con otros candidatos.</p>
+          <p>Te deseamos mucho éxito en tu búsqueda y te invitamos a seguir al pendiente de nuestras futuras vacantes.</p>
+          <br>
+          <p>Atentamente,<br>El equipo de Recursos Humanos</p>
+        </div>
+      `;
+      
+      await resend.emails.send({
+        from: "Plataforma RH <onboarding@isaijesus.com>",
+        to: [candidate.email],
+        subject: subject,
+        html: htmlBody,
+      });
+    }
+
+    await client.query("COMMIT");
+
     res.status(200).json({ 
-      message: "Candidato descartado exitosamente", 
-      data: rows[0] 
+      message: "Candidato descartado exitosamente y notificado.", 
+      data: updatedApp 
     });
+
   } catch (err) {
+    if (client) await client.query("ROLLBACK");
     console.error('Error al descartar al candidato:', err);
     res.status(500).json({
       error: 'Error en el servidor',
       detalle: err.message
     });
+  } finally {
+    if (client) client.release();
   }
 });
 
 router.patch("/:id/hire", async (req, res) => {
+  const { id: applicationId } = req.params;
+  let client; 
+
   try {
-    const { id: applicationId } = req.params;
-    const queryText = `
+    client = await pool.connect();
+    await client.query("BEGIN");
+
+    const updateQuery = `
       UPDATE applications 
       SET status = 'Aceptado' 
       WHERE id = $1 
-      RETURNING *;
+      RETURNING candidate_id, vacancy_id;
     `;
-    const { rows } = await pool.query(queryText, [applicationId]);
+    const { rows: [updatedApp] } = await client.query(updateQuery, [applicationId]);
 
-    if (rows.length === 0) {
+    if (!updatedApp) {
       return res.status(404).json({ error: "No se encontró la aplicación" });
     }
+
+    const { rows: [candidate] } = await client.query(
+      "SELECT name, email FROM users WHERE id = $1",
+      [updatedApp.candidate_id]
+    );
+    const { rows: [vacancy] } = await client.query(
+      "SELECT title FROM vacancies WHERE id = $1",
+      [updatedApp.vacancy_id]
+    );
+
+    if (candidate && vacancy) {
+      const subject = `¡Felicidades! Has sido seleccionado para: ${vacancy.title}`;
+      const htmlBody = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h1>¡Felicidades, ${candidate.name}!</h1>
+          <p>¡Tenemos excelentes noticias! Nos complace informarte que has sido seleccionado(a) para unirte a nuestro equipo en el puesto de <strong>${vacancy.title}</strong>.</p>
+          <p>Tu proceso de selección ha concluido exitosamente y estamos muy emocionados de tenerte a bordo.</p>
+          <p>En breve, un miembro de nuestro equipo de Recursos Humanos se pondrá en contacto contigo para discutir los siguientes pasos (documentación, fecha de inicio, etc.).</p>
+          <br>
+          <p>¡Bienvenido(a) al equipo!</p>
+          <p>Atentamente,<br>El equipo de Recursos Humanos</p>
+        </div>
+      `;
+      
+      await resend.emails.send({
+        from: "Plataforma RH <onboarding@isaijesus.com>",
+        to: [candidate.email],
+        subject: subject,
+        html: htmlBody,
+      });
+    }
+
+    await client.query("COMMIT");
+
     res.status(200).json({ 
-      message: "Candidato contratado exitosamente", 
-      data: rows[0] 
+      message: "Candidato contratado exitosamente y notificado.", 
+      data: updatedApp 
     });
+
   } catch (err) {
+    if (client) await client.query("ROLLBACK"); 
     console.error('Error al contratar al candidato:', err);
     res.status(500).json({
       error: 'Error en el servidor',
       detalle: err.message
     });
+  } finally {
+    if (client) client.release();
   }
 });
 
@@ -340,7 +425,7 @@ router.post("/:id/send_language_test", async (req, res) => {
         <h1>Hola, ${user.name},</h1>
         <p>Hemos revisado tu aplicación para <strong>${vacancy.title}</strong> y queremos invitarte al primer paso.</p>
         <p>Este paso es una prueba de idioma. Por favor, ingresa al siguiente enlace para completarla:</p>
-        <p><a href="[LINK]" style="color: #007bff; text-decoration: none; font-weight: bold;">Acceder a la Prueba de Idioma</a></p>
+        <a href="https://www.isaijesus.com/" style="color: #007bff; text-decoration: none; font-weight: bold;">Acceder a la Prueba de Idioma</a>
         <br>
         <p>¡Mucho éxito!</p>
         <p>Atentamente,<br>El equipo de Recursos Humanos</p>
@@ -418,7 +503,7 @@ router.post("/:id/submit_language_test", async (req, res) => {
         <p>¡Felicidades! Has aprobado la prueba de idioma.</p>
         <p>El siguiente paso en tu proceso para la vacante de <strong>${vacancy.title}</strong> es la prueba técnica.</p>
         <p>Por favor, ingresa al siguiente enlace para completarla:</p>
-        <p><a href="[LINK]" style="color: #007bff; text-decoration: none; font-weight: bold;">Acceder a la Prueba Técnica</a></p>
+        <a href="https://www.isaijesus.com/" style="color: #007bff; text-decoration: none; font-weight: bold;">Acceder a la Prueba Técnica</a>
         <br>
         <p>¡Mucho éxito!</p>
         <p>Atentamente,<br>El equipo de Recursos Humanos</p>

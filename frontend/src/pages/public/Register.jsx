@@ -61,6 +61,7 @@ export default function Register() {
       const userId = data.data.user_id;
 
       login(userId, "candidate");
+      toast.success("¡Usuario creado con éxito!")
       navigate("/");
     } catch (error) {
       console.error("Error al registrar:", error);
