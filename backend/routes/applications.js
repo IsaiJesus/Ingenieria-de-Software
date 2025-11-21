@@ -187,10 +187,14 @@ router.get("/manager-view", async (req, res) => {
     const queryText = `
       SELECT 
         usr.id,
+        vac.title,
         usr.name,
         cand.gender,
         cand.age,
         cand.resume_link,
+        app.language_test_result,
+        technical_test_result,
+        ia_shortlisted,
         vac.id AS vacancy_id,
 	      app.id AS application_id,
         app.status
@@ -204,7 +208,7 @@ router.get("/manager-view", async (req, res) => {
         users AS usr ON cand.user_id = usr.id
       WHERE 
         vac.manager_id = $1
-        AND app.ia_shortlisted = TRUE
+        -- AND app.ia_shortlisted = TRUE
       ORDER BY
         app.created_at DESC; -- Muestra las aplicaciones más recientes primero
     `;

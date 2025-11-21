@@ -8,8 +8,9 @@ const candidateRoutes = require('./routes/candidates');
 const profileRoutes = require('./routes/profile');
 const vacanciesRoutes = require('./routes/vacancies');
 const applicationsRoutes = require('./routes/applications');
-const interviewsRoutes = require('./routes/interviews')
-const employeesRoutes = require('./routes/employees')
+const interviewsRoutes = require('./routes/interviews');
+const employeesRoutes = require('./routes/employees');
+const simulationRoutes = require('./routes/simulation')
 
 const app = express();
 const port = 3001;
@@ -30,6 +31,9 @@ app.use('/api/applications', applicationsRoutes);
 app.use('/api/interviews', interviewsRoutes);
 
 app.use('/api/employees', employeesRoutes);
+
+app.use('/api/simulation', simulationRoutes);
+
 
 app.listen(port, () => {
   console.log(`Servidor backend corriendo en http://localhost:${port}`);

@@ -15,6 +15,7 @@ import Login from "./pages/public/Login.jsx";
 import Register from "./pages/public/Register.jsx";
 import RecoverPassword from "./pages/public/RecoverPassword.jsx";
 import NotFound from "./pages/public/NotFound.jsx";
+import Simulation from "./pages/public/Simulation.jsx";
 
 import Vacancies from "./pages/public/Vacancies.jsx";
 
@@ -78,6 +79,12 @@ const router = createBrowserRouter([
             <Profile />
           </ProtectedRoute>
         ),
+      },
+
+      // --- RUTAS SIMULACIÓN ---
+      {
+        path: "/simulation",
+        element: <Simulation/>,
       },
 
       // --- RUTAS PRIVADAS: CANDIDATO ---
